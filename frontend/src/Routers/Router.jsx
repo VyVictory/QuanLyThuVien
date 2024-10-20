@@ -1,22 +1,27 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Navbar from "../Pages/Header/Navbar";
 import NoPage from "../Pages/Center/NoPage";
 import Center from "../Pages/Center/Center";
-import Layout from "../Pages/component/Layout";
-
+import Layout from "../Pages/Layout";
+import LayoutStaff from "../Pages/staff/LayoutStaff";
+import Dashboard from "../Pages/staff/dashboard/page";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 const Router = () => {
+    const isAdmin = false;
     return (
-        <div className="">
-            <BrowserRouter>
-                <Navbar />
-                <Routes>
-                    <Route path="/" element={<Layout />}>
-                        <Route index element={<Center />} />
-                        <Route path="*" element={<NoPage />} />
-                    </Route>
-                </Routes>
-            </BrowserRouter>
-        </div>
+        <BrowserRouter>
+            {isAdmin ? <></> : <Navbar />}
+            <Routes>
+                <Route path="/" element={<Layout />}>
+                    <Route index element={<Center />} />
+                    <Route path="*" element={<NoPage />} />
+                </Route>
+                <Route path="staff" element={<LayoutStaff />}>
+                    <Route index element={<Dashboard />} />
+                    <Route path="*" element={<NoPage />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
     );
 }
 
