@@ -8,7 +8,7 @@ const Navbar = () => {
         setChaneLogin(!ChaneLogin);
     }
     return (
-        <div >
+        <div className="absolute h-screen">
 
             <div className="w-screen  h-12 bg-blue-400 flex items-center justify-around ">
 
