@@ -30,7 +30,7 @@ const Navbar = () => {
                         </button>
                     </div>
                 </div>
-                <button onClick={handLogin} className="bg-white rounded-lg p-1 flex-none" style={{ textAlign: 'center' }}>
+                <button onClick={handLogin} className="bg-white rounded-lg shadow-inner shadow-xl p-1 flex-none " style={{ textAlign: 'center' }}>
                     Đăng nhập
                 </button>
 
