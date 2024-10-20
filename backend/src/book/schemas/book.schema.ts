@@ -38,7 +38,11 @@ export class Book extends Document {
   available: boolean; 
 
   @Prop({type: Types.ObjectId, ref:'user'})
-  createby:Types.ObjectId
+  createby:Types.ObjectId;
+
+  @Prop({ type: [String], default: [] }) 
+  img: string[];
+
 
 }
 

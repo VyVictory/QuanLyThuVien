@@ -3,10 +3,12 @@ import { BookController } from './book.controller';
 import { BookService } from './book.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BookSchema } from './schemas/book.schema';
+import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 
 
 @Module({
   imports:[
+    CloudinaryModule,
   MongooseModule.forFeature([{ name: 'Book', schema: BookSchema }]),],
   controllers: [BookController],
   providers: [BookService]

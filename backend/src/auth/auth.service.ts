@@ -126,9 +126,9 @@ export class AuthService {
       }
     
     
-      async findById(userId: string): Promise<Omit<User, 'password' | 'isActive' | 'role' | 'createdAt' | 'updatedAt'>> {
+      async findById(userId: string): Promise<Omit<User, 'password' | 'isActive' | 'createdAt' | 'updatedAt'>> {
         const user = await this.UserModel.findById(userId)
-          .select('-password -isActive -role -createdAt -updatedAt') // Không trả về các trường này
+          .select('-password -isActive -createdAt -updatedAt') // Không trả về các trường này
           .exec();
       
         if (!user) {
@@ -137,9 +137,8 @@ export class AuthService {
       
         return user;
       }
-       
+
       async updateUser(userId: string, updateData: any): Promise<any> {
-        // Tìm người dùng theo ID
         const user = await this.UserModel.findById(userId);
       
         if (!user) {

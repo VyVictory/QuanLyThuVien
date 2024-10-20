@@ -23,6 +23,13 @@ export class AuthController {
     return this.authService.login(loginDto);
     }
 
+    @Get('current')
+    @UseGuards(AuthGuardD) // Sử dụng guard để bảo vệ route
+    async getCurrentUser(@CurrentUser() user: any) {
+      console.log(user);
+      return user; // Trả về thông tin user hiện tại
+    }
+
     @Post('refresh-token')
     async refreshToken(@Body('userId') userId: string,
     @Body('refreshToken') refreshToken: string) {

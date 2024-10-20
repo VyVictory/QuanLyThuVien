@@ -40,7 +40,7 @@ export class User extends Document {
   @Prop()
   basketBook: string;
 
-  @Prop({ default: 0 })
+  @Prop({ default: 1 }) //(0admin,1user,2manager)
   role: number;
 
   @Prop({ default: true })

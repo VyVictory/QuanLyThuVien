@@ -1,38 +1,34 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 
 
-export class CreateBookDto {
+export class UpdateBookDto {
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     readonly title: string;
   
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     readonly author: string; // tác giả nhá shop
 
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     publicationDate: string
 
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     publisher: string
 
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     language: string;
 
     @IsNumber()
-    @IsNotEmpty()
+    @IsOptional()
     pageCount: number;
 
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     bookShelf: string;
-
-    @IsNotEmpty()
-    @IsString()
-    readonly img?:string[]
   
   }
