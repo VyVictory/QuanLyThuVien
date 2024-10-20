@@ -1,10 +1,6 @@
 import { Link } from "react-router-dom";
 
 const Login = () => {
-<<<<<<< HEAD
-
-=======
->>>>>>> backend
     return (
         <div className="absolute bg-black bg-opacity-20 top-0 left-0 w-screen h-full justify-center flex">
             <div className=" w-[400px] h-full py-8 text-white">
