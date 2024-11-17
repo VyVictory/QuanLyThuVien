@@ -5,7 +5,7 @@ import NavBar from '../components/staff/NavBar'
 export default function LayoutStaff() {
     return (
         <>
-            <div className='flex gap-5 bg-[#FFF2F2] pt-5 '>
+            <div className='flex gap-5 bg-[#FFF2F2] min-h-screen'>
                 <SideBar />
                 <Outlet />
             </div>
