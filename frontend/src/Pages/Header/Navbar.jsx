@@ -1,11 +1,13 @@
 
 import { useState } from "react";
-
 import Login from "../login/Login";
+import { redirect,useNavigate } from "react-router-dom";
 const Navbar = () => {
     const [ChaneLogin, setChaneLogin] = useState(false);
+    const navigate = useNavigate();
     const handLogin = () => {
-        setChaneLogin(!ChaneLogin);
+        // setChaneLogin(!ChaneLogin);
+        navigate('/login');
     }
     return (
         <div className="absolute h-screen">

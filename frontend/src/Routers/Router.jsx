@@ -9,6 +9,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Usermanagement from "../Pages/staff/Usermanagement";
 import Bookmanagement from "../Pages/staff/Bookmanagement";
 import BorrowReturnmanagement from "../Pages/staff/BorrowReturnmanagement";
+import Login from "../Pages/login/Login";
 const Router = () => {
     const isAdmin = false;
     return (
@@ -20,8 +21,7 @@ const Router = () => {
                     <Route path="*" element={<NoPage />} />
                 </Route>
                 <Route >
-                    <Route index element={<Center />} />
-                    <Route path="*" element={<NoPage />} />
+                    <Route path="/login" element={<Login />} />
                 </Route>
                 <Route path="staff" element={<LayoutStaff />}>
                     <Route index element={<Dashboard />} />
