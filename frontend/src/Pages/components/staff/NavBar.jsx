@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import Login from "../Login";
+import Login from "../../login/Login";
 const NavBar = () => {
     const [ChaneLogin, setChaneLogin] = useState(false);
     const handLogin = () => {

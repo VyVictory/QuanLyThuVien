@@ -10,9 +10,13 @@ const Router = () => {
     const isAdmin = false;
     return (
         <BrowserRouter>
-            {isAdmin ? <></> : <Navbar />}
+            {/* {isAdmin ? <></> : <Navbar />} */}
             <Routes>
                 <Route path="/" element={<Layout />}>
+                    <Route index element={<Center />} />
+                    <Route path="*" element={<NoPage />} />
+                </Route>
+                <Route >
                     <Route index element={<Center />} />
                     <Route path="*" element={<NoPage />} />
                 </Route>
