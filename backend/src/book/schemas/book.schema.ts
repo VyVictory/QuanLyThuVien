@@ -14,10 +14,10 @@ export class Book extends Document {
   title: string;
 
   @Prop()
-  category: string // nối tới schema category
+  category: string; // nối tới schema category
 
   @Prop()
-  author: string
+  author: string;
 
   @Prop()
   publicationDate: string;
@@ -32,18 +32,28 @@ export class Book extends Document {
   pageCount: number;
 
   @Prop()
-  bookShelf: string
+  bookShelf: string;
 
   @Prop({ default: true })
   available: boolean; 
 
-  @Prop({type: Types.ObjectId, ref:'user'})
-  createby:Types.ObjectId;
+  @Prop({ type: Types.ObjectId, ref: 'user' })
+  createby: Types.ObjectId;
+
+  @Prop({ type: Types.ObjectId, ref: 'user' })
+  UpdateBy: Types.ObjectId;
 
   @Prop({ type: [String], default: [] }) 
   img: string[];
 
+  @Prop({ default: 1 })
+  copies: number; // tổng xách
 
+  @Prop({ default: 0 })
+  borrowedCopies: number; // Số lượng sách đã mượn
+
+  @Prop({ type: [{ userId: Types.ObjectId, borrowDate: Date, returnDate: Date }], default: [] })
+  borrowHistory: { userId: Types.ObjectId, borrowDate: Date, returnDate: Date }[]; // lichsumuonsach
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);

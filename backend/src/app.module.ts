@@ -7,6 +7,8 @@ import { BookModule } from './book/book.module';
 import { MongooseModule } from '@nestjs/mongoose'; 
 import { ConfigModule } from '@nestjs/config';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { CategoryController } from './category/category.controller';
+import { CategoryModule } from './category/category.module';
 
 
 @Module({
@@ -16,8 +18,8 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.MONGO_URI),
-    AuthModule, BookModule, CloudinaryModule, ],
-  controllers: [AppController, AuthController],
+    AuthModule, BookModule, CloudinaryModule, CategoryModule, ],
+  controllers: [AppController, AuthController, CategoryController],
   providers: [AppService],
 })
 export class AppModule {}

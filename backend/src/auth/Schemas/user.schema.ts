@@ -40,6 +40,9 @@ export class User extends Document {
   @Prop()
   basketBook: string;
 
+  @Prop({ type: Types.ObjectId, ref: 'Book' })
+  borrowed: Types.ObjectId[];
+
   @Prop({ default: 1 }) //(0admin,1user,2manager)
   role: number;
 
