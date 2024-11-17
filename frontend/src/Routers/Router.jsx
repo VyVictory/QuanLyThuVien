@@ -6,6 +6,9 @@ import Layout from "../Pages/Layout";
 import LayoutStaff from "../Pages/staff/LayoutStaff";
 import Dashboard from "../Pages/staff/dashboard/page";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import Usermanagement from "../Pages/staff/Usermanagement";
+import Bookmanagement from "../Pages/staff/Bookmanagement";
+import BorrowReturnmanagement from "../Pages/staff/BorrowReturnmanagement";
 const Router = () => {
     const isAdmin = false;
     return (
@@ -22,6 +25,10 @@ const Router = () => {
                 </Route>
                 <Route path="staff" element={<LayoutStaff />}>
                     <Route index element={<Dashboard />} />
+                    <Route path="usermanagement" element={<Usermanagement />} />
+                    <Route path="bookmanagement" element={<Bookmanagement />} />
+                    <Route path="borrowreturnmanagement" element={<BorrowReturnmanagement />} />
+
                     <Route path="*" element={<NoPage />} />
                 </Route>
             </Routes>
