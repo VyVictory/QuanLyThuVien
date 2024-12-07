@@ -1,20 +1,16 @@
 
 import { useState } from "react";
-import Login from "../login/Login";
-import { redirect, useNavigate } from "react-router-dom";
-const Navbar = () => {
+import Login from "../../login/Login";
+const NavBar = () => {
     const [ChaneLogin, setChaneLogin] = useState(false);
-    const navigate = useNavigate();
     const handLogin = () => {
-        // setChaneLogin(!ChaneLogin);
-        navigate('/login');
+        setChaneLogin(!ChaneLogin);
     }
     return (
-        <div className="absolute h-screen">
-
-            <div className="w-screen h-12 bg-blue-400 flex items-center justify-around ">
+        <div >
+            <div className="w-screen  h-12 bg-blue-400 flex items-center justify-around ">
                 <div className="uppercase font-bold flex-none text-white text-xl">
-                    thư viện online
+                    thư viện online Staff
                 </div>
                 <div class="w-full max-w-sm min-w-[200px] grow mx-36" >
                     <div class="relative">
@@ -49,4 +45,4 @@ const Navbar = () => {
     );
 }
 
-export default Navbar;
+export default NavBar;

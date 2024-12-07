@@ -1,10 +1,7 @@
 const Center = () => {
-    return ( 
-        <>
-        <div className="text-blue-600">aaaaa</div>
-        center
-        </>
-     );
+    return (
+        <div>abc</div>
+    );
 }
- 
+
 export default Center;
