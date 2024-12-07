@@ -1,4 +1,4 @@
-import { Body, Controller, HttpException, HttpStatus, Param, Post, Put, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { BookService } from './book.service';
 import { create } from 'domain';
 import { CreateBookDto } from './dto/createBook.dto';
@@ -64,18 +64,78 @@ export class BookController {
   }
 
 
-
-
-
-
-  
-
-  
-
-
-
-
+  @Put('borrowBook/:bookId')
+  @UseGuards(new RolesGuard(['0','2'])) 
+  @UseGuards(AuthGuardD)
+    async borrowBook(
+        @CurrentUser() currentUser: User,
+        @Param('bookId') bookId: string,
+        @Body('userId') userId: string
+    )
+    {
+        if (!currentUser) {
+            throw new HttpException('User not found or not authenticated', HttpStatus.UNAUTHORIZED);
+        }
     
+        console.log('Current User:', currentUser);
+        console.log('role:',currentUser.role);
     
+        return this.bookService.borrowBook(bookId, userId);
+    }
+
+
+    @Put('returnBook/:bookId')
+    @UseGuards(new RolesGuard(['0','2']))
+    @UseGuards(AuthGuardD)
+    async returnBook(
+        @CurrentUser() currentUser: User,
+        @Param('bookId') bookId: string,
+        @Body('userId') userId: string
+    ){
+        if (!currentUser) {
+            throw new HttpException('User not found or not authenticated', HttpStatus.UNAUTHORIZED);
+        }
+        console.log('Current User:', currentUser);
+        console.log('role:',currentUser.role);
     
+        return this.bookService.returnBook(bookId, userId)
+    }
+
+    @Get('gethistory/:bookId')
+    @UseGuards(new RolesGuard(['0','2']))
+    @UseGuards(AuthGuardD)
+    async getHistory(
+        @CurrentUser() currentUser: User,
+        @Param('bookId') bookId: string
+    ){
+        if (!currentUser) {
+            throw new HttpException('User not found or not authenticated', HttpStatus.UNAUTHORIZED);
+        }
+        console.log('Current User:', currentUser);
+        console.log('role:',currentUser.role);
+    
+        return this.bookService.getHistoryForBook(bookId)
+    }
+
+    @Get('getallbooks')
+    @UseGuards(AuthGuardD)
+    async getAllBooks(){
+        return this.bookService.getAllBooks();
+    }
+
+    @Get('getbook/:bookId')
+    @UseGuards(AuthGuardD)
+    async getBook(
+        @Param('bookId') bookId: string
+    ){
+        return this.bookService.getBookById(bookId);
+    }
+
+    @Get('getbookbyCategory/:category')
+    @UseGuards(AuthGuardD)
+    async getBookByCategory(
+        @Param('category') category: string
+    ){
+        return this.bookService.getBooksByCategory(category);
+    }
 }

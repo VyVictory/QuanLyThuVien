@@ -13,6 +13,10 @@ export class CreateBookDto {
 
     @IsString()
     @IsNotEmpty()
+    readonly Category: string; // thể loại
+
+    @IsString()
+    @IsNotEmpty()
     publicationDate: string
 
     @IsString()
@@ -34,5 +38,9 @@ export class CreateBookDto {
     @IsNotEmpty()
     @IsString()
     readonly img?:string[]
-  
+
+    @IsNumber()
+    @IsNotEmpty()
+    copies: number; // tổng xách
+
   }
