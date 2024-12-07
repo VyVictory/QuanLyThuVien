@@ -10,7 +10,7 @@ const Navbar = () => {
         navigate('/login');
     }
     return (
-        <div className="absolute h-screen">
+        <div className="fixed">
 
             <div className="w-screen h-12 bg-blue-400 flex items-center justify-around ">
                 <div className="uppercase font-bold flex-none text-white text-xl">
