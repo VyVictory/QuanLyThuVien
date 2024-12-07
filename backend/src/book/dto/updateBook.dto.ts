@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsEmpty, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 
 
@@ -30,5 +30,9 @@ export class UpdateBookDto {
     @IsString()
     @IsOptional()
     bookShelf: string;
+
+    @IsString()
+    @IsNotEmpty()
+    UpdateBy: string
   
   }

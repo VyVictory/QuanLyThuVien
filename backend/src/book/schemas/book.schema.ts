@@ -13,11 +13,17 @@ export class Book extends Document {
   })
   title: string;
 
-  @Prop()
-  category: string // nối tới schema category
+  @Prop({ 
+    unique: [
+      true,
+      'The category already exists',
+    ],
+    type: Types.ObjectId, ref: 'Category' })
+  category: Types.ObjectId; 
 
   @Prop()
-  author: string
+  author: string;
+  
 
   @Prop()
   publicationDate: string;
@@ -32,18 +38,32 @@ export class Book extends Document {
   pageCount: number;
 
   @Prop()
-  bookShelf: string
+  bookShelf: string;
 
   @Prop({ default: true })
   available: boolean; 
 
-  @Prop({type: Types.ObjectId, ref:'user'})
-  createby:Types.ObjectId;
+  @Prop({ type: Types.ObjectId, ref: 'User' })
+  createby: Types.ObjectId;
 
-  @Prop({ type: [String], default: [] }) 
+  @Prop({ type: Types.ObjectId, ref: 'User' })
+  UpdateBy: Types.ObjectId;
+
+  @Prop({ type: [String], default: [] }) // Store image URLs
   img: string[];
 
+  @Prop({ default: 1 })
+  copies: number;
 
+  @Prop({ default: 0 })
+  borrowedCopies: number;
+
+  @Prop({
+    type: [{ userId: Types.ObjectId, borrowDate: Date, returnDate: Date }],
+    default: [],
+  })
+  borrowHistory: { userId: Types.ObjectId; borrowDate: Date; returnDate: Date }[];
 }
+
 
 export const BookSchema = SchemaFactory.createForClass(Book);

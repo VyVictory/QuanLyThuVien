@@ -1,0 +1,3 @@
+Test Plan, Test Case, Kỹ thuật kiểm thử, Test Report
+
+thường thì là 1 chức năng sẽ có tầm trên 10 testcase
