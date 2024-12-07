@@ -118,7 +118,7 @@ export class BookController {
     }
 
     @Get('getallbooks')
-    @UseGuards(AuthGuardD)
+    
     async getAllBooks(){
         return this.bookService.getAllBooks();
     }

@@ -10,6 +10,7 @@ import Usermanagement from "../Pages/staff/Usermanagement";
 import Bookmanagement from "../Pages/staff/Bookmanagement";
 import BorrowReturnmanagement from "../Pages/staff/BorrowReturnmanagement";
 import Login from "../Pages/login/Login";
+import Categorymanagement from "../Pages/staff/Categorymanagement";
 const Router = () => {
     const isAdmin = false;
     return (
@@ -26,6 +27,7 @@ const Router = () => {
                 <Route path="staff" element={<LayoutStaff />}>
                     <Route index element={<Dashboard />} />
                     <Route path="usermanagement" element={<Usermanagement />} />
+                    <Route path="categorymanagement" element={<Categorymanagement />} />
                     <Route path="bookmanagement" element={<Bookmanagement />} />
                     <Route path="borrowreturnmanagement" element={<BorrowReturnmanagement />} />
 

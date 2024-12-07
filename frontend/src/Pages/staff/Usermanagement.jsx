@@ -13,17 +13,21 @@ export default function Usermanagement() {
           <table class="w-full text-center">
             <thead>
               <tr>
-                <th class="px-4 py-2">ID</th>
                 <th class="px-4 py-2">Name</th>
-                <th class="px-4 py-2">Role</th>
+                <th class="px-4 py-2">Phone Number</th>
+                <th class="px-4 py-2">Address</th>
+                <th class="px-4 py-2">Gender</th>
+                <th class="px-4 py-2">Birhday</th>
                 <th class="px-4 py-2">Actions</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td class="px-4 py-2">1</td>
                 <td class="px-4 py-2">John Doe</td>
-                <td class="px-4 py-2">Admin</td>
+                <td class="px-4 py-2">John Doe</td>
+                <td class="px-4 py-2">John Doe</td>
+                <td class="px-4 py-2">True</td>
+                <td class="px-4 py-2">True</td>
                 <td class="px-4 py-2">
                   <button class="bg-teal-400 px-3 py-1 rounded-md mr-2 hover:bg-secondary/80">Edit</button>
                   <button class="bg-red-400 text-destructive-foreground px-3 py-1 rounded-md hover:bg-destructive/80">Delete</button>
