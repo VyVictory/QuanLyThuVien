@@ -1,4 +1,4 @@
-const LeftBar = () => {
+const LeftBar = ({ select }) => {
     return (
         <div className="w-72 bg-[#E8C5E5] h-full p-5 pt-8 text-white">
             <div>
@@ -8,16 +8,20 @@ const LeftBar = () => {
                 <div className="flex row items-center pt-4">
                     <div className="w-4  border-b-2 border-white ">
                     </div>
-                    <button className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11">Tất cả sách</button>
+                    <button
+                        onClick={() => select('tatca')}
+                        className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11">Tất cả sách</button>
                 </div>
                 <div className="flex-col">
                     <div className="flex row items-center pt-4">
                         <div className="w-4  border-b-2 border-white ">
                         </div>
-                        <button className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11" >Thể loại</button>
+                        <button
+                        onClick={() => select('theloai')}
+                        className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11" >Thể loại</button>
                     </div>
                     <div className="h-full ml-8 flex row">
-                        <div className=" border-l-2 border-white mb-5" style={{height:'full'}}></div>
+                        <div className=" border-l-2 border-white mb-5" style={{ height: 'full' }}></div>
                         <div className="w-full">
                             <div className="flex row items-center pt-4">
                                 <div className="w-4  border-b-2 border-white ">
@@ -41,17 +45,23 @@ const LeftBar = () => {
                 <div className="flex row items-center pt-4">
                     <div className="w-4  border-b-2 border-white ">
                     </div>
-                    <button className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11">Danh sách yêu cầu mượn</button>
+                    <button 
+                    onClick={() => select('sachyeucaumuon')}
+                    className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11">Danh sách yêu cầu mượn</button>
                 </div>
                 <div className="flex row items-center pt-4">
                     <div className="w-4  border-b-2 border-white ">
                     </div>
-                    <button className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11">Danh sách đang mượn</button>
+                    <button
+                    onClick={() => select('sachdangmuon')}
+                    className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11">Danh sách đang mượn</button>
                 </div>
                 <div className="flex row items-center pt-4">
                     <div className="w-4  border-b-2 border-white ">
                     </div>
-                    <button className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11">Lịch sử mượn sách</button>
+                    <button
+                    onClick={() => select('lichsumuonsach')}
+                    className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11">Lịch sử mượn sách</button>
                 </div>
             </div>
         </div>
