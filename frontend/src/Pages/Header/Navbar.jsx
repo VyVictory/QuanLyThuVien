@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import Login from "../login/Login";
-import { redirect,useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 const Navbar = () => {
     const [ChaneLogin, setChaneLogin] = useState(false);
     const navigate = useNavigate();
@@ -12,7 +12,7 @@ const Navbar = () => {
     return (
         <div className="absolute h-screen">
 
-            <div className="w-screen  h-12 bg-blue-400 flex items-center justify-around ">
+            <div className="w-screen h-12 bg-blue-400 flex items-center justify-around ">
                 <div className="uppercase font-bold flex-none text-white text-xl">
                     thư viện online
                 </div>

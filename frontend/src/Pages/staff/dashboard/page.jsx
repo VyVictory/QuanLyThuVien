@@ -2,11 +2,11 @@ import React from 'react'
 
 export default function Dashboard() {
     return (
-        <div className='bg-white px-5 py-3'>
-            <h1>Dashboard</h1>
+        <div className=' px-5 py-3'>
+            <h1 class="text-3xl font-bold text-center my-8">Dashboard</h1>
             <div className='grid gap-5 grid-cols-4'>
                 {/* sách */}
-                <div className='border-[1px] bg-gray-200 rounded-md px-5 py-2 border-[#7AB2D3] w-[300px]'>
+                <div className='border-[1px] bg-gray-200 rounded-md px-5 py-2 border-[#7AB2D3] w-[300px] '>
                     <h3>Tổng số sách hiện có</h3>
                     <div className='flex justify-between items-center border-b-8 border-[#7AB2D3]'>
                         <span className='font-bold text-5xl'>123</span>
