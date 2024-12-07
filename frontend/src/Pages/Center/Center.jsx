@@ -11,10 +11,10 @@ const Center = () => {
     return (
         <div className="flex h-full">
 
-            <div className="pt-12">
+            <div className="pt-12 min-h-screen">
                 <LeftBar select={chaneSelect} />
             </div>
-            <div className="h-full w-full pt-12 overflow-y-auto max-h-screen">
+            <div className="h-full w-full">
                 <Home data={dataName} />
             </div>
         </div>
