@@ -1,6 +1,6 @@
 const LeftBar = ({ select }) => {
     return (
-        <div className="w-72 bg-[#E8C5E5] h-full p-5 pt-8 text-white">
+        <div className="w-80 h-full bg-[#E8C5E5] p-5 pt-8 text-white">
             <div>
                 <button className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11">Danh mục</button>
             </div>
