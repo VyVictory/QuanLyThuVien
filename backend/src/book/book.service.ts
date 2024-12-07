@@ -37,12 +37,6 @@ export class BookService {
             borrowHistory: [],
         });
     
-        // Kiểm tra xem category có được gán đúng vào newBook không
-        if (!newBook.category) {
-            console.log('The category add failed:', newBook.category);
-            throw new HttpException('Category ID is missing or invalid', HttpStatus.BAD_REQUEST);
-        }
-    
         if (files && files.length > 0) {
             try {
                 const uploadedImages = await Promise.all(files.map(file => this.cloudinaryService.uploadFile(file)));
@@ -85,6 +79,8 @@ export class BookService {
         return await book.save();
       }
 
+
+      // cái này là xác nhận mượn sách cái này chỉ có admin hoặc thủ thư mới được xác nhận
   async borrowBook(bookId: string, userId: string): Promise<Book> {
     // Tìm sách theo ID
     const book = await this.BookModel.findById(bookId);
@@ -106,6 +102,20 @@ export class BookService {
     });
     return await book.save();
   }
+
+  // async requestBorrowBook(bookId: string, userId: string): Promise<Book> {
+  //   // Tìm sách theo ID
+  //   const book = await this.BookModel.findById(bookId);
+  //   if (!book) {
+  //     throw new HttpException('Book not found', HttpStatus.NOT_FOUND);
+  //   }
+
+  //   if (book.copies <= book.borrowedCopies) {
+  //     throw new HttpException('No copies available to borrow', HttpStatus.BAD_REQUEST);
+  //   }
+
+  //   return await book.save();
+  // }
 
 
   async returnBook(bookId: string, userId: string): Promise<Book> {
@@ -190,13 +200,15 @@ export class BookService {
     }
 
     const books = await this.BookModel.find({ category: categoryId })
-        .populate('category', '_id nameCate') // Lấy thông tin từ collection Category
-        .populate('', '_id firstName lastName')
-        .populate({
-          path: 'borrowHistory.userId', 
-          select: 'firstName lastName', 
-      })
-      .exec();
+    .populate('category', '_id nameCate')  // Lấy thông tin từ collection Category
+    .populate('createby', '_id firstName lastName')  // Lấy thông tin từ collection User
+    .exec();
+  
+  for (const book of books) {
+    if (book.borrowHistory && book.borrowHistory.length > 0) {
+      await book.populate('borrowHistory.userId', 'firstName lastName');
+    }
+  }
 
     if (!books || books.length === 0) {
         throw new HttpException('No books found for this category', HttpStatus.NOT_FOUND);
