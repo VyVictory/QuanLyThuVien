@@ -15,7 +15,7 @@ import {
   
     @IsString()
     @IsOptional()
-    readonly numberPhone?: string;
+    readonly username?: string;
   
     @IsString()
     @IsNotEmpty({ message: 'Password is required' })
