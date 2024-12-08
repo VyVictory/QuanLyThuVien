@@ -9,15 +9,7 @@ const Center = () => {
     }
     console.log(dataName)
     return (
-        <div className="flex h-full">
-
-            <div className="pt-12 min-h-screen">
-                <LeftBar select={chaneSelect} />
-            </div>
-            <div className="h-full w-full">
-                <Home data={dataName} />
-            </div>
-        </div>
+        <Home data={dataName} />
     );
 }
 

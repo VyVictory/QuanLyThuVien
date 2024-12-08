@@ -1,5 +1,6 @@
 import axios from 'axios';
 import formatDate from './formatDate';
+import authToken from '../components/authToken';
 const register = async (form) => {
      try {
         const response = await axios.post("http://localhost:3001/auth/register", {
@@ -22,6 +23,7 @@ const login = async (form) => {
            "username": form.username,
            "password": form.password,
        });
+       authToken.setToken(response.accessToken)
        return { success: true, message: response.message};
    } catch (response) {
        return { success: false, message: response.response.data.message ,data:{

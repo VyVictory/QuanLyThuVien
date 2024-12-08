@@ -17,8 +17,8 @@ const LeftBar = ({ select }) => {
                         <div className="w-4  border-b-2 border-white ">
                         </div>
                         <button
-                        onClick={() => select('theloai')}
-                        className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11" >Thể loại</button>
+                            onClick={() => select('theloai')}
+                            className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11" >Thể loại</button>
                     </div>
                     <div className="h-full ml-8 flex row">
                         <div className=" border-l-2 border-white mb-5" style={{ height: 'full' }}></div>
@@ -45,23 +45,25 @@ const LeftBar = ({ select }) => {
                 <div className="flex row items-center pt-4">
                     <div className="w-4  border-b-2 border-white ">
                     </div>
-                    <button 
-                    onClick={() => select('sachyeucaumuon')}
-                    className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11">Danh sách yêu cầu mượn</button>
+                    <a className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11" href="/requestlist">
+                        <button
+                            className="w-full">Danh sách yêu cầu mượn</button>
+                    </a>
+
                 </div>
                 <div className="flex row items-center pt-4">
                     <div className="w-4  border-b-2 border-white ">
                     </div>
                     <button
-                    onClick={() => select('sachdangmuon')}
-                    className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11">Danh sách đang mượn</button>
+                        onClick={() => select('sachdangmuon')}
+                        className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11">Danh sách đang mượn</button>
                 </div>
                 <div className="flex row items-center pt-4">
                     <div className="w-4  border-b-2 border-white ">
                     </div>
                     <button
-                    onClick={() => select('lichsumuonsach')}
-                    className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11">Lịch sử mượn sách</button>
+                        onClick={() => select('lichsumuonsach')}
+                        className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11">Lịch sử mượn sách</button>
                 </div>
             </div>
         </div>

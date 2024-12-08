@@ -13,9 +13,9 @@ const Navbar = () => {
         <div className="fixed">
 
             <div className="w-screen h-12 bg-blue-400 flex items-center justify-around ">
-                <div className="uppercase font-bold flex-none text-white text-xl">
+                <a href="/" className="uppercase font-bold flex-none text-white text-xl">
                     thư viện online
-                </div>
+                </a>
                 <div class="w-full max-w-sm min-w-[200px] grow mx-36" >
                     <div class="relative">
                         <input
