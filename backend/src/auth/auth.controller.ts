@@ -3,10 +3,11 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { User } from './Schemas/user.schema';
 import { LoginDto } from './dto/login.dto';
-import { AuthGuardD } from './guard/auth.guard';
+import { AuthGuardD, } from './guard/auth.guard';
 import { CurrentUser } from './decorator/current.user';
 import { UpdateUserDto } from './dto/updateUser.dto';
 import { ChangePasswordDto } from './dto/changePassword.dto';
+import { RolesGuard } from './guard/role.guard';
 
 
 @Controller('auth')
@@ -63,5 +64,13 @@ export class AuthController {
     ) {
         return this.authService.changePassword(currentUser._id.toString(), changePasswordDto);
     }
+
+    @Get('getAllUser')
+    @UseGuards(new RolesGuard(['0','2']))
+    @UseGuards(AuthGuardD)
+    async getAllUser(){
+        return this.authService.getAllUser();
+    }
+
 
 }

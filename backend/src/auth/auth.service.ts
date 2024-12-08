@@ -25,7 +25,7 @@ export class AuthService {
     
       async register(registerDto: RegisterDto): Promise<User> {
         const {
-          numberPhone,
+          username,
           email,
           firstName,
           lastName,
@@ -35,10 +35,10 @@ export class AuthService {
           password,
         } = registerDto;
     
-        const checkUSer = await this.UserModel.findOne({ numberPhone });
+        const checkUSer = await this.UserModel.findOne({ username });
         if (checkUSer) {
           throw new HttpException(
-            'the numberphone has account:(',
+            'the username has account:(',
             HttpStatus.CONFLICT,
           );
         }
@@ -46,7 +46,7 @@ export class AuthService {
         const hashPassword = await bcrypt.hash(password, 10);
     
         const user = await this.UserModel.create({
-          numberPhone,
+          username,
           email,
           firstName,
           lastName,
@@ -100,12 +100,12 @@ export class AuthService {
       
     
       async login(loginDto: LoginDto): Promise<{ accessToken: string }> {
-        const { numberPhone, email, password } = loginDto;
+        const { username, email, password } = loginDto;
     
         // Tìm người dùng bằng email hoặc số điện thoại
         const user = await this.UserModel.findOne({
           $or: [
-            { numberPhone }, // Tìm theo số điện thoại
+            { username }, // Tìm theo số điện thoại
             { email }, // Tìm theo email
           ],
         });
@@ -209,7 +209,9 @@ export class AuthService {
         }
     }
     
-      
+      async getAllUser(): Promise<User[]> {
+        return this.UserModel.find().exec();
+      }
     
 }
     

@@ -12,9 +12,9 @@ import {
     @ValidateIf((o) => !o.email) // Chỉ validate nếu email không được cung cấp
     @IsString({ message: 'Phone number must be a string' })
     @IsNotEmpty({ message: 'Phone number is required if email is not provided' })
-    readonly numberPhone?: string;
+    readonly username?: string;
   
-    @ValidateIf((o) => !o.numberPhone) // Chỉ validate nếu số điện thoại không được cung cấp
+    @ValidateIf((o) => !o.username) // Chỉ validate nếu số điện thoại không được cung cấp
     @IsEmail({}, { message: 'Invalid email format' })
     @IsNotEmpty({ message: 'Email is required if phone number is not provided' })
     readonly email?: string;

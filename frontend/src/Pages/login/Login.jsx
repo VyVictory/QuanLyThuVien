@@ -16,7 +16,7 @@ const Login = () => {
     return (
         <div className={`h-screen w-screen block bg-cover`} style={{ backgroundImage: `url(${bg_login})` }}>
             <div className="absolute  bg-opacity-[0%] top-0 left-0 w-screen h-full justify-center flex">
-                <div className="w-[400px] h-full py-8 text-white">
+                <div className="w-[440px] h-full py-8 text-white">
                     {(() => {
                         switch (formName) {
                             case 'login':
