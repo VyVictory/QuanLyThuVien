@@ -1,7 +1,9 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Login from "../login/Login";
 import { redirect, useNavigate } from "react-router-dom";
+import authToken from "../../components/authToken";
+import auth from "../../Service/auth";
 const Navbar = () => {
     const [ChaneLogin, setChaneLogin] = useState(false);
     const navigate = useNavigate();
@@ -9,6 +11,23 @@ const Navbar = () => {
         // setChaneLogin(!ChaneLogin);
         navigate('/login');
     }
+    const [username, setUsername] = useState(null); // Trạng thái lưu tên người dùng
+
+    const getUserNameData = async () => {
+        try {
+            const prf = await auth.current(); // Gọi API để lấy thông tin người dùng
+            console.log(prf.user.username);
+            setUsername(prf.user.username); // Cập nhật trạng thái username
+        } catch (error) {
+            console.error("Error fetching username:", error);
+        }
+    };
+    // Gọi hàm lấy tên người dùng chỉ khi đã có authToken
+    useEffect(() => {
+        if (authToken.getToken()) {
+            getUserNameData();
+        }
+    }, [authToken]);
     return (
         <div className="fixed">
 
@@ -33,9 +52,30 @@ const Navbar = () => {
                         </button>
                     </div>
                 </div>
-                <button onClick={handLogin} className="bg-white rounded-lg shadow-xl p-1 flex-none " style={{ textAlign: 'center' }}>
-                    Đăng nhập
-                </button>
+                {!authToken.getToken() ? (
+                    <button
+                        onClick={handLogin}
+                        className="bg-white rounded-lg shadow-xl p-1 flex-none"
+                        style={{ textAlign: "center" }}
+                    >
+                        Đăng nhập
+                    </button>
+                ) : (
+                    <div>
+                        {username ? (
+                            <span>
+                                Xin chào, {username}!
+                                <button
+                                onClick={() => {authToken.deleteToken();
+                                    navigate("/");
+                                }}
+                                className="ml-2 bg-red-400 p-2 rounded-lg">Logout</button>
+                            </span>
+                        ) : (
+                            <span>Đang tải thông tin...</span>
+                        )}
+                    </div>
+                )}
 
             </div>
             {
