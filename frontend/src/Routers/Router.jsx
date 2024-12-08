@@ -9,7 +9,9 @@ import BorrowReturnmanagement from "../Pages/staff/BorrowReturnmanagement";
 import Login from "../Pages/login/Login";
 import Categorymanagement from "../Pages/staff/Category/Categorymanagement";
 import Bookmanagement from "../Pages/staff/Book/Bookmanagement";
-import RequestList from "../Pages/danhsachyeucaumuon/requestList";
+import RequestList from "../Pages/danhmuc/requestList";
+import RequestedList from "../Pages/danhmuc/requestedList";
+import HistoryRequestList from "../Pages/danhmuc/historyRequestList";
 const Router = () => {
     return (
         <BrowserRouter>
@@ -19,6 +21,8 @@ const Router = () => {
                     <Route index element={<Center />} />
                     <Route path="*" element={<NoPage />} />
                     <Route path="requestlist" element={<RequestList />} />
+                    <Route path="requestedlist" element={<RequestedList />} />
+                    <Route path="historyrequestlist" element={<HistoryRequestList />} />
                 </Route>
                 <Route >
                     <Route path="/login" element={<Login />} />
