@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
 import { createCategory } from '../../../Service/Staff';
+import { redirect } from 'react-router-dom';
 
 export default function AddCategory({ openModal, handleCloseModal }) {
     const [dataCategory, setDataCategory] = useState({
         categoryName: '',
         decription: ''
     });
-    const handleSumbit = async () => {
-
+    const handleSubmit = async () => {
         const categoryData = {
             nameCate: dataCategory.categoryName,
             decription: dataCategory.decription
         };
         await createCategory(categoryData);
         handleCloseModal();
+        window.location.reload();
     }
     return (
         <>
@@ -39,7 +40,7 @@ export default function AddCategory({ openModal, handleCloseModal }) {
                         </div>
                         <div className='flex gap-2 justify-between mt-5'>
                             <button className="bg-red-500 text-white px-4 py-2 rounded-md mt-4" onClick={handleCloseModal}>Close</button>
-                            <button className="bg-sky-500 text-white px-4 py-2 rounded-md mt-4" onClick={handleSumbit}>Create</button>
+                            <button className="bg-sky-500 text-white px-4 py-2 rounded-md mt-4" onClick={handleSubmit}>Create</button>
                         </div>
                     </div>
                 </div>

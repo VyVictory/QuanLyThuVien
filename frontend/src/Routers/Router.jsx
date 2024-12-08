@@ -4,7 +4,7 @@ import Layout from "../Pages/Layout";
 import LayoutStaff from "../Pages/staff/LayoutStaff";
 import Dashboard from "../Pages/staff/dashboard/page";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Usermanagement from "../Pages/staff/Usermanagement";
+import Usermanagement from "../Pages/staff/User/Usermanagement";
 import BorrowReturnmanagement from "../Pages/staff/BorrowReturnmanagement";
 import Login from "../Pages/login/Login";
 import Categorymanagement from "../Pages/staff/Category/Categorymanagement";
