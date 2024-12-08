@@ -8,9 +8,10 @@ const LeftBar = ({ select }) => {
                 <div className="flex row items-center pt-4">
                     <div className="w-4  border-b-2 border-white ">
                     </div>
-                    <button
-                        onClick={() => select('tatca')}
-                        className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11">Tất cả sách</button>
+                    <a className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11" href="/">
+                        <button
+                            className="w-full">Tất cả sách</button>
+                    </a>
                 </div>
                 <div className="flex-col">
                     <div className="flex row items-center pt-4">
@@ -54,16 +55,19 @@ const LeftBar = ({ select }) => {
                 <div className="flex row items-center pt-4">
                     <div className="w-4  border-b-2 border-white ">
                     </div>
-                    <button
-                        onClick={() => select('sachdangmuon')}
-                        className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11">Danh sách đang mượn</button>
+                    <a className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11" href="/requestedlist">
+                        <button
+                            className="w-full">Danh sách đang mượn</button>
+                    </a>
                 </div>
                 <div className="flex row items-center pt-4">
                     <div className="w-4  border-b-2 border-white ">
+
                     </div>
-                    <button
-                        onClick={() => select('lichsumuonsach')}
-                        className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11">Lịch sử mượn sách</button>
+                    <a className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11" href="/historyrequestlist">
+                        <button
+                            className="w-full">Lịch sử mượn sách</button>
+                    </a>
                 </div>
             </div>
         </div>
