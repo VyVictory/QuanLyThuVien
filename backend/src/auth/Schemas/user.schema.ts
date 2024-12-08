@@ -8,10 +8,10 @@ export class User extends Document {
   @Prop({
     unique: [
       true,
-      'The phone number has been created, please try with another number',
+      'The username has been created, please try with another number',
     ],
   })
-  numberPhone: string;
+  username: string;
 
   @Prop()
   email: string;
