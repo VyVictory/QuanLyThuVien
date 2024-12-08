@@ -2,7 +2,7 @@ import { useState } from "react";
 import auth from "../../Service/auth";
 const RegisterForm = ({ chaneForm }) => {
     const [form, setForm] = useState({
-        numberPhone: "",
+        username: "",
         firstName: "",
         lastName: "",
         address: "",
@@ -29,12 +29,11 @@ const RegisterForm = ({ chaneForm }) => {
             if (rep.success) {
                 alert("Register successfully!");
             }else{
-                alert("Register Fail!");
+                alert("Register Fail!"+rep.message);
             }
         } catch (error) {
             console.error(error)
         }
-        // console.log(form)
     };
     return (
         <div className="bg-black bg-opacity-70 h-full w-full rounded-2xl p-6 pt-24">
@@ -53,9 +52,9 @@ const RegisterForm = ({ chaneForm }) => {
                         <input
                             type="text"
                             className="border w-full h-12 mb-2 p-2 "
-                            placeholder="SỐ ĐIỆN THOẠI"
-                            name="numberPhone"
-                            value={form.numberPhone}
+                            placeholder="TÊN ĐĂNG NHẬP"
+                            name="username"
+                            value={form.username}
                             onChange={handleChange}
                             style={{ background: "none", borderRadius: "10px" }}
                         />
