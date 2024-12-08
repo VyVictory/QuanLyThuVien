@@ -45,6 +45,13 @@ export async function getBookById(id) {
     )
     return request.data
 }
+export async function createBook(bookData) {
+    const token = authToken.getToken();
+    const request = await axios.post(`http://localhost:3001/book/createBook`, bookData,
+        { headers: { Authorization: `Bearer ${token}` }, }
+    )
+    return request.data
+}
 //USER
 export async function getAllUser() {
     const token = authToken.getToken();
