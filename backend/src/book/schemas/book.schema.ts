@@ -13,11 +13,7 @@ export class Book extends Document {
   })
   title: string;
 
-  @Prop({ 
-    unique: [
-      true,
-      'The category already exists',
-    ],
+  @Prop({  
     type: Types.ObjectId, ref: 'Category' })
   category: Types.ObjectId; 
 
@@ -59,10 +55,21 @@ export class Book extends Document {
   borrowedCopies: number;
 
   @Prop({
-    type: [{ userId: Types.ObjectId, borrowDate: Date, returnDate: Date }],
+    type: [
+      {
+        userId: { type: Types.ObjectId, ref: 'User' }, 
+        borrowDate: { type: Date, required: true },
+        returnDate: { type: Date, default: null },
+      },
+    ],
     default: [],
   })
-  borrowHistory: { userId: Types.ObjectId; borrowDate: Date; returnDate: Date }[];
+  borrowHistory: {
+    userId: Types.ObjectId;
+    borrowDate: Date;
+    returnDate: Date | null;
+  }[];
+  
 }
 
 
