@@ -1,18 +1,15 @@
-
-import Navbar from "../Pages/Header/Navbar";
 import NoPage from "../Pages/Center/NoPage";
 import Center from "../Pages/Center/Center";
 import Layout from "../Pages/Layout";
 import LayoutStaff from "../Pages/staff/LayoutStaff";
 import Dashboard from "../Pages/staff/dashboard/page";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Usermanagement from "../Pages/staff/Usermanagement";
-import Bookmanagement from "../Pages/staff/Bookmanagement";
 import BorrowReturnmanagement from "../Pages/staff/BorrowReturnmanagement";
 import Login from "../Pages/login/Login";
-import Categorymanagement from "../Pages/staff/Categorymanagement";
+import Categorymanagement from "../Pages/staff/Category/Categorymanagement";
+import Bookmanagement from "../Pages/staff/Book/Bookmanagement";
 const Router = () => {
-    const isAdmin = false;
     return (
         <BrowserRouter>
             {/* {isAdmin ? <></> : <Navbar />} */}

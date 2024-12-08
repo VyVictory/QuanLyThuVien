@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { getAllBook } from '../../Service/Staff';
+import { getAllBook } from '../../../Service/Staff';
+import AddBook from './AddBook';
 export default function Bookmanagement() {
   const [dataBook, setDataBook] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,16 +24,26 @@ export default function Bookmanagement() {
     fetchData();
   }, [])
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  function HandleOpenModal() {
+    setIsModalOpen(true)
+  }
+  function HandleCloseModal() {
+    setIsModalOpen(false)
+  }
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
   return (
     <div class="w-full my-10">
+
       <h1 class="text-3xl font-bold text-center mb-8">Book Management</h1>
       <div class="bg-card p-6 rounded-lg shadow-lg bg-white mx-10">
         <div class="flex items-center justify-between mb-4 gap-2">
           <input type="text" placeholder="Search books..." class="w-full px-3 py-2 rounded-md bg-input text-primary placeholder-primary-foreground focus:outline-none focus:ring focus:ring-primary" />
           <button class="bg-sky-400 text-primary-foreground px-4 py-2 rounded-md hover:bg-sky-500">Search</button>
-          <button class="bg-emerald-500 text-primary-foreground px-4 py-2 rounded-md hover:bg-emerald-400">Add</button>
+          <button class="bg-emerald-500 text-primary-foreground px-4 py-2 rounded-md hover:bg-emerald-400" onClick={HandleOpenModal}>Add</button>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-center">
@@ -73,6 +84,7 @@ export default function Bookmanagement() {
           </table>
         </div>
       </div>
+      <AddBook openModal={isModalOpen} handleCloseModal={HandleCloseModal} />
     </div>
   )
 }
