@@ -96,7 +96,7 @@ const RegisterForm = ({ chaneForm }) => {
                     {/* Right Column */}
                     <div>
                         <select
-                            className="border w-full h-12 mb-2 p-2 text-gray-400"
+                            className="border w-full h-12 mb-2 p-2 text-white"
                             name="gender"
                             value={form.gender}
                             onChange={handleChange}
