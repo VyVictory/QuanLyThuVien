@@ -101,31 +101,39 @@ export class AuthService {
     
       async login(loginDto: LoginDto): Promise<{ accessToken: string }> {
         const { username, email, password } = loginDto;
-    
-        // Tìm người dùng bằng email hoặc số điện thoại
-        const user = await this.UserModel.findOne({
-          $or: [
-            { username }, // Tìm theo số điện thoại
-            { email }, // Tìm theo email
-          ],
-        });
-    
-        // Nếu người dùng không tồn tại
+      
+        console.log('Received login data:', { username, email, password });
+      
+        if (!username && !email) {
+          throw new HttpException('Phone number or email is required', HttpStatus.BAD_REQUEST);
+        }
+      
+        let user;
+        if (username) {
+          user = await this.UserModel.findOne({ username }).exec();
+        } else if (email) {
+          user = await this.UserModel.findOne({ email }).exec();
+        }
+      
         if (!user) {
           throw new HttpException('User not found', HttpStatus.NOT_FOUND);
         }
-    
-        // Kiểm tra mật khẩu
+      
+        console.log("Fetched user from DB:", user);
+        console.log("Password from frontend (plain):", password);
+        console.log("Password from DB (hashed):", user.password);
+      
         const isPasswordValid = await bcrypt.compare(password, user.password);
+        console.log("Password comparison result:", isPasswordValid);
+      
         if (!isPasswordValid) {
           throw new HttpException('Invalid password', HttpStatus.UNAUTHORIZED);
         }
-    
-        // Trả về token nếu đăng nhập thành công
+      
         return this.generateToken(user._id);
       }
-    
-    
+      
+
       async findById(userId: string): Promise<Omit<User, 'password' | 'isActive' | 'createdAt' | 'updatedAt'>> {
         const user = await this.UserModel.findById(userId)
           .select('-password -isActive -createdAt -updatedAt') // Không trả về các trường này
