@@ -53,7 +53,9 @@ export class CategoryService {
         return category;
     }
 
-    
 
+    async getCategoryByid(id :string): Promise<Category>{
+        return await this.CategoryModel.findById(id);
+    }
 
 }
