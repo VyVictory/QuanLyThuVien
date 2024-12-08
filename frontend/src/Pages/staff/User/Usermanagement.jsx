@@ -1,6 +1,30 @@
 import React from 'react'
+import { useState, useEffect } from 'react'
+import { getAllUser } from '../../../Service/Staff'
 
 export default function Usermanagement() {
+  const [dataUser, setDataUser] = useState([])
+  const [loading, setLoading] = useState()
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        setLoading(true)
+        const response = await getAllUser();
+        setDataUser(response)
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchdata();
+  }, [])
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   return (
     <div class="w-full my-10">
       <h1 class="text-3xl font-bold text-center mb-8">User Management</h1>
@@ -14,25 +38,20 @@ export default function Usermanagement() {
             <thead>
               <tr>
                 <th class="px-4 py-2">Name</th>
-                <th class="px-4 py-2">Phone Number</th>
                 <th class="px-4 py-2">Address</th>
                 <th class="px-4 py-2">Gender</th>
                 <th class="px-4 py-2">Birhday</th>
-                <th class="px-4 py-2">Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td class="px-4 py-2">John Doe</td>
-                <td class="px-4 py-2">John Doe</td>
-                <td class="px-4 py-2">John Doe</td>
-                <td class="px-4 py-2">True</td>
-                <td class="px-4 py-2">True</td>
-                <td class="px-4 py-2">
-                  <button class="bg-teal-400 px-3 py-1 rounded-md mr-2 hover:bg-secondary/80">Edit</button>
-                  <button class="bg-red-400 text-destructive-foreground px-3 py-1 rounded-md hover:bg-destructive/80">Delete</button>
-                </td>
-              </tr>
+              {dataUser.map((data) => (
+                <tr key={data._id}>
+                  <td class="px-4 py-2"> {data.firstName} {data.lastName}</td>
+                  <td class="px-4 py-2">{data.address}</td>
+                  <td class="px-4 py-2">{data.gender}</td>
+                  <td class="px-4 py-2">{data.birthday}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

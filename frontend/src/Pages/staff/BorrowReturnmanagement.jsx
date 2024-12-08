@@ -1,6 +1,7 @@
 import React from 'react'
-
+import { useState, useEffect } from 'react'
 export default function BorrowReturnmanagement() {
+
   return (
     <div class="w-full my-10">
       <h1 class="text-3xl font-bold text-center mb-8">Borrow/Return Management</h1>
