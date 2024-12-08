@@ -47,6 +47,20 @@ export class CategoryController {
         return this.CategoryService.updateCategory(updateCategoryDto,id);
     }
     
+    @Get('getCategoryById/:id')
+    @UseGuards(new RolesGuard(['0','2','1']))
+    @UseGuards(AuthGuardD)
+    async getCategoryId (
+        @CurrentUser() currentUser: User,
+        @Param('id') id: string,
+    ){
+        if (!currentUser) {
+            throw new HttpException('User not found or not authenticated', HttpStatus.UNAUTHORIZED);
+        }
+        return this.CategoryService.getCategoryByid(id);
+    }
+    
+
 
 
 }
