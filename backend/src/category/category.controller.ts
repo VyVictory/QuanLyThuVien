@@ -60,7 +60,4 @@ export class CategoryController {
         return this.CategoryService.getCategoryByid(id);
     }
     
-
-
-
 }
