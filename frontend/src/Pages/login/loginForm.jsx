@@ -1,5 +1,10 @@
 import { Link } from "react-router-dom";
 const LoginForm = ({ chaneForm }) => {
+    // const [form, setForm] = useState({
+    //     numberPhone: "",
+    //     password: "",
+    // });
+
     return (
         <div className="bg-black bg-opacity-70 h-full w-full rounded-2xl p-6 pt-24">
             <div className="h-4/5 flex items-center flex-col px-2">
