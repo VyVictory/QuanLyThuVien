@@ -1,5 +1,7 @@
 import { useState } from "react";
 import auth from "../../Service/auth";
+import { redirect } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 const RegisterForm = ({ chaneForm }) => {
     const [form, setForm] = useState({
         username: "",
@@ -11,7 +13,7 @@ const RegisterForm = ({ chaneForm }) => {
         password: "",
         confirmPassword: ""
     });
-
+    const navigate = useNavigate();
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm({ ...form, [name]: value });
@@ -28,6 +30,7 @@ const RegisterForm = ({ chaneForm }) => {
             console.log(rep)
             if (rep.success) {
                 alert("Register successfully!");
+                window.location.reload();
             }else{
                 alert("Register Fail!"+rep.message);
             }
@@ -57,6 +60,7 @@ const RegisterForm = ({ chaneForm }) => {
                             value={form.username}
                             onChange={handleChange}
                             style={{ background: "none", borderRadius: "10px" }}
+                            required
                         />
                         <input
                             type="text"
@@ -66,6 +70,7 @@ const RegisterForm = ({ chaneForm }) => {
                             value={form.firstName}
                             onChange={handleChange}
                             style={{ background: "none", borderRadius: "10px" }}
+                            required
                         />
                         <input
                             type="text"
@@ -75,6 +80,7 @@ const RegisterForm = ({ chaneForm }) => {
                             value={form.lastName}
                             onChange={handleChange}
                             style={{ background: "none", borderRadius: "10px" }}
+                            required
                         />
                         <input
                             type="text"
@@ -84,28 +90,30 @@ const RegisterForm = ({ chaneForm }) => {
                             value={form.address}
                             onChange={handleChange}
                             style={{ background: "none", borderRadius: "10px" }}
+                            required
                         />
                     </div>
                     {/* Right Column */}
                     <div>
                         <select
-                            className="border w-full h-12 mb-2 p-2 "
+                            className="border w-full h-12 mb-2 p-2 text-gray-400"
                             name="gender"
                             value={form.gender}
                             onChange={handleChange}
                             style={{ background: "none", borderRadius: "10px" }}
                         >
-                            <option value="true" className="text-black">Nam</option>
-                            <option value="false" className="text-black">Nữ</option>
+                            <option value="true" className="text-gray-500">Nam</option>
+                            <option value="false" className="text-gray-500">Nữ</option>
                         </select>
                         <input
                             type="date"
-                            className="border w-full h-12 mb-2 p-2"
+                            className="border w-full h-12 mb-2 p-2 text-gray-400"
                             placeholder="NGÀY SINH"
                             name="birthday"
                             value={form.birthday}
                             onChange={handleChange}
                             style={{ background: "none", borderRadius: "10px" }}
+                            required
                         />
                         <input
                             type="password"
@@ -115,6 +123,7 @@ const RegisterForm = ({ chaneForm }) => {
                             value={form.password}
                             onChange={handleChange}
                             style={{ background: "none", borderRadius: "10px" }}
+                            required
                         />
                         <input
                             type="password"
@@ -124,6 +133,7 @@ const RegisterForm = ({ chaneForm }) => {
                             value={form.confirmPassword}
                             onChange={handleChange}
                             style={{ background: "none", borderRadius: "10px" }}
+                            required
                         />
                     </div>
                     {/* Submit Button */}

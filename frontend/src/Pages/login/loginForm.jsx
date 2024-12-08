@@ -1,11 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import { useState } from "react";
 import auth from "../../Service/auth";
+import { useNavigate } from 'react-router-dom';
 const LoginForm = ({ chaneForm }) => {
     // const [form, setForm] = useState({
     //     numberPhone: "",
     //     password: "",
     // });
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         username: "",
         password: ""
@@ -26,7 +28,8 @@ const LoginForm = ({ chaneForm }) => {
             const rep = await auth.login(form);
             console.log(rep)
             if (rep.success) {
-                alert("login successfully!");
+                alert("Login successfully!");
+                navigate('/');
             } else {
                 alert("login Fail!" + rep.message);
             }
@@ -53,7 +56,7 @@ const LoginForm = ({ chaneForm }) => {
                         placeholder="Tên đăng nhập" style={{ background: 'none', borderRadius: '10px' }}>
                     </input>
                     <input type="password"
-                    name='password'
+                        name='password'
                         value={form.password}
                         onChange={handleChange}
                         className="border w-full h-full p-2" placeholder="Mật khẩu" style={{ background: 'none', borderRadius: '10px' }}>
