@@ -14,10 +14,11 @@ const Layout = () => {
             <Navbar />
             <div className="flex h-full">
                 <div className="pt-12 min-h-screen">
-                    <LeftBar select={chaneSelect} />
+                    <LeftBar select={chaneSelect} dataName={dataName} />
+
                 </div>
                 <div className="h-full w-full">
-                    <Outlet />
+                    <Outlet context={{ dataName, chaneSelect }} />
                 </div>
             </div>
         </>
