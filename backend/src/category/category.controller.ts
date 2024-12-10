@@ -48,8 +48,6 @@ export class CategoryController {
     }
     
     @Get('getCategoryById/:id')
-    @UseGuards(new RolesGuard(['0','2','1']))
-    @UseGuards(AuthGuardD)
     async getCategoryId (
         @CurrentUser() currentUser: User,
         @Param('id') id: string,
