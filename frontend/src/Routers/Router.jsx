@@ -12,6 +12,7 @@ import Bookmanagement from "../Pages/staff/Book/Bookmanagement";
 import RequestList from "../Pages/danhmuc/requestList";
 import RequestedList from "../Pages/danhmuc/requestedList";
 import HistoryRequestList from "../Pages/danhmuc/historyRequestList";
+import BookDetail from "../Pages/Center/bookDetail";
 const Router = () => {
     return (
         <BrowserRouter>
@@ -23,6 +24,7 @@ const Router = () => {
                     <Route path="requestlist" element={<RequestList />} />
                     <Route path="requestedlist" element={<RequestedList />} />
                     <Route path="historyrequestlist" element={<HistoryRequestList />} />
+                    <Route path="/book/detail/:id" element={<BookDetail />} />
                 </Route>
                 <Route >
                     <Route path="/login" element={<Login />} />

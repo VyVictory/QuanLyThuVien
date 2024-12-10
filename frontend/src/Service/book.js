@@ -10,7 +10,15 @@ const getAllBook = async () => {
 };
 const getAllBookByCategory = async (idCategory) => {
     try {
-        const response = await axios.get("http://localhost:3001/book/getbookbyCategory/"+{idCategory});
+        const response = await axios.get("http://localhost:3001/book/getbookbyCategory/"+idCategory);
+        return { success: true, data: response.data };
+    } catch (error) {
+        return { success: false,error: error};
+    }
+};
+const getBookById = async (idBook) => {
+    try {
+        const response = await axios.get("http://localhost:3001/book/getbook/"+idBook);
         return { success: true, data: response.data };
     } catch (error) {
         return { success: false,error: error};
@@ -19,4 +27,5 @@ const getAllBookByCategory = async (idCategory) => {
 export default {
     getAllBook,
     getAllBookByCategory,
+    getBookById,
 }
