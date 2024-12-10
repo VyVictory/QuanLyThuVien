@@ -27,7 +27,6 @@ export class CategoryController {
     }
 
     @Get('getAllCategory')
-    @UseGuards(AuthGuardD)
     async getAllCategory(){
         return this.CategoryService.getAllCategory();
     }
