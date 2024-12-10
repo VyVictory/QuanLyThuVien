@@ -118,13 +118,11 @@ export class BookController {
     }
 
     @Get('getallbooks')
-    
     async getAllBooks(){
         return this.bookService.getAllBooks();
     }
 
     @Get('getbook/:bookId')
-    @UseGuards(AuthGuardD)
     async getBook(
         @Param('bookId') bookId: string
     ){
@@ -132,7 +130,6 @@ export class BookController {
     }
 
     @Get('getbookbyCategory/:category')
-    @UseGuards(AuthGuardD)
     async getBookByCategory(
         @Param('category') category: string
     ){
