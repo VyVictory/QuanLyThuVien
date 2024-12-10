@@ -48,7 +48,7 @@ export default function HistoryRequestList() {
     };
 
     return (
-        <div className="pt-12 px-5">
+        <div className="pt-12 px-5 min-h-screen">
             <div className="p-5 text-lg">
                 <strong>Lịch sử mượn sách</strong>
             </div>
@@ -76,7 +76,7 @@ export default function HistoryRequestList() {
                     ))}
                 </tbody>
             </table>
-            <div className="mt-4 flex justify-center gap-2 float-end h-full">
+            <div className="mt-4 flex justify-center gap-2 float-end fixed bottom-6 right-6">
                 <button
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}

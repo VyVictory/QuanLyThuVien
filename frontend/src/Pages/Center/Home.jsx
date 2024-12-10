@@ -8,11 +8,11 @@ const Home = ({ data }) => {
     const cardsPerPage = 8;
     const indexOfLastCard = currentPage * cardsPerPage;
     const indexOfFirstCard = indexOfLastCard - cardsPerPage;
-    const currentCards = cards.slice(indexOfFirstCard, indexOfLastCard);
+    const currentCards = data.slice(indexOfFirstCard, indexOfLastCard);
 
     // Chuyển trang
     const nextPage = () => {
-        if (currentPage < Math.ceil(cards.length / cardsPerPage)) {
+        if (currentPage < Math.ceil(data.length / cardsPerPage)) {
             setCurrentPage(currentPage + 1);
         }
     };
@@ -27,21 +27,22 @@ const Home = ({ data }) => {
         <div className='h-screen flex flex-col'>
             <div className="ml-1 text-white pt-12 overflow-y-auto flex-1">
                 {/* Hiển thị các thẻ card cho trang hiện tại */}
-                    <div className="justify-center flex flex-wrap py-0 px-8 gap-x-10">
-                        {currentCards.map((_, index) => (
-                            <div key={index} className="card w-52 bg-[#393E46] m-1">
-                                <img src={imglogin} className="h-56" alt="Avata" style={{ width: '100%' }} />
-                                <div className="container p-3">
-                                    <h4><b>John Doe</b></h4>
-                                    <p>Architect & Engineer</p>
-                                </div>
+                <div className="justify-center flex flex-wrap py-0 px-8 gap-x-10">
+                    {currentCards.map((_, index) => (
+                        <div key={index} className="card w-52 bg-[#393E46] m-1">
+                            <img src={imglogin} className="h-56" alt="Avata" style={{ width: '100%' }} />
+                            <div className="container p-3">
+                                <h4 className="truncate-title text-ellipsis overflow-hidden whitespace-nowrap"><b>{_.title}</b></h4>
+
+                                <p className='flex row'>Tác giả:<p className='uppercase'>{_.author}</p></p>
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                    ))}
+                </div>
 
             </div>
             <div className='w-full flex justify-center'>
-                <div className="py-4 flex fixed bottom-0">
+                <div className=" pb-2 flex fixed bottom-0">
                     <button
                         className="px-4 py-2 rounded bg-slate-400"
                         onClick={prevPage}
@@ -53,7 +54,7 @@ const Home = ({ data }) => {
                     <button
                         className="px-4 py-2 rounded bg-slate-400"
                         onClick={nextPage}
-                        disabled={currentPage === Math.ceil(cards.length / cardsPerPage)}
+                        disabled={currentPage === Math.ceil(data.length / cardsPerPage)}
                     >
                         Trang kế
                     </button>
