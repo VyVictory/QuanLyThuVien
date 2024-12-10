@@ -130,7 +130,6 @@ export class BookController {
     }
 
     @Get('getbookbyCategory/:category')
-    @UseGuards(AuthGuardD)
     async getBookByCategory(
         @Param('category') category: string
     ){
