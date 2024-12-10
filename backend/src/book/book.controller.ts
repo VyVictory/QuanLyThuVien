@@ -118,13 +118,11 @@ export class BookController {
     }
 
     @Get('getallbooks')
-    @UseGuards(AuthGuardD)
     async getAllBooks(){
         return this.bookService.getAllBooks();
     }
 
     @Get('getbook/:bookId')
-    @UseGuards(AuthGuardD)
     async getBook(
         @Param('bookId') bookId: string
     ){
