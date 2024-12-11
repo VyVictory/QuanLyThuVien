@@ -194,5 +194,11 @@ export class BookController {
         return this.bookService.borrowBookWithRequest(request)
     }
 
+    @Get('getAllRequests')
+    @UseGuards(new RolesGuard(['0','2']))
+    @UseGuards(AuthGuardD)
+    async getAllRequests(){
+        return this.bookService.getRequestsForBook();
+    }
     
 }
