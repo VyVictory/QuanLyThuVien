@@ -23,7 +23,7 @@ const LeftBar = ({ select, dataName }) => {
 
     // Check if the current URL is "/book/detail/..." using location.pathname
     const isBookDetailPage = location.pathname.startsWith("/book/detail");
-
+    const thisPage = location.pathname.split('/').pop();
     return (
         <>
             <div className="w-80"></div>
@@ -59,7 +59,7 @@ const LeftBar = ({ select, dataName }) => {
                                             <div className="w-4 border-b-2 border-white "></div>
                                             <button
                                                 onClick={() => select(category._id)}
-                                                className={`bg-[#${dataName !== category._id ? 'F19ED2' : 'b5a3ff'}] w-full p-2 rounded-2xl min-h-11 truncate-title text-ellipsis overflow-hidden whitespace-nowrap`}
+                                                className={`${dataName !== category._id ? 'bg-[#F19ED2]' : 'bg-blue-500'} w-full p-2 rounded-2xl min-h-11 truncate-title text-ellipsis overflow-hidden whitespace-nowrap`}
                                             >
                                                 {category.nameCate}
                                             </button>
@@ -73,19 +73,19 @@ const LeftBar = ({ select, dataName }) => {
                     {/* Other sections that will always be visible */}
                     <div className="flex row items-center pt-4">
                         <div className="w-4 border-b-2 border-white "></div>
-                        <a className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11" href="/requestlist">
+                        <a className={`${thisPage=='requestlist'?'bg-blue-500':'bg-[#F19ED2]'}  w-full p-2 rounded-2xl h-11`} href="/requestlist">
                             <button className="w-full">Danh sách yêu cầu mượn</button>
                         </a>
                     </div>
                     <div className="flex row items-center pt-4">
                         <div className="w-4 border-b-2 border-white "></div>
-                        <a className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11" href="/requestedlist">
+                        <a className={`${thisPage=='requestedlist'?'bg-blue-500':'bg-[#F19ED2]'}  w-full p-2 rounded-2xl h-11`} href="/requestedlist">
                             <button className="w-full">Danh sách đang mượn</button>
                         </a>
                     </div>
                     <div className="flex row items-center pt-4">
                         <div className="w-4 border-b-2 border-white "></div>
-                        <a className="bg-[#F19ED2] w-full p-2 rounded-2xl h-11" href="/historyrequestlist">
+                        <a className={`${thisPage=='historyrequestlist'?'bg-blue-500':'bg-[#F19ED2]'}  w-full p-2 rounded-2xl h-11`} href="/historyrequestlist">
                             <button className="w-full">Lịch sử mượn sách</button>
                         </a>
                     </div>

@@ -34,7 +34,18 @@ const BookDetail = () => {
             }
         }
     };
-
+    const requestBorrow = async (idBook) => {
+        try {
+            const rs = await book.requestBorrow(idBook);
+            if (rs.success) {
+                alert('mượn sách thành công')
+            } else {
+                alert(rs.mess)
+            }
+        } catch (error) {
+            return console.log("Error request Borrow book:", error);
+        }
+    };
     useEffect(() => {
         getBookData(); // Gọi API khi component được mount
     }, [id]); // Thêm id vào dependency array để khi id thay đổi sẽ fetch lại dữ liệu mới
@@ -78,7 +89,9 @@ const BookDetail = () => {
                             <div><strong>Ngày xuất bản:</strong> {dataBook.publicationDate}</div>
                             <div><strong>Nhà xuất bản:</strong> {dataBook.publisher}</div>
                             <div><strong>Ngôn ngữ:</strong> {dataBook.language}</div>
-                            <button className='bg-blue-500 hover:bg-blue-700 text-white p-4 rounded-lg mt-3'>
+                            <button
+                                onClick={() => requestBorrow(dataBook._id)}
+                                className='bg-blue-500 hover:bg-blue-700 text-white p-4 rounded-lg mt-3'>
                                 Đăng ký mượn sách
                             </button>
                         </div>
@@ -89,25 +102,28 @@ const BookDetail = () => {
                         <div className="flex flex-wrap gap-5 overflow-x-auto">
                             {dataBookCategory.length > 0 ? (
                                 dataBookCategory.map((bookItem, index) => (
-                                    <div
-                                        key={index}
-                                        className="card w-52 bg-gray-200 m-1"
-                                    >
-                                        <img
-                                            src={bookItem.img ? bookItem.img : notimg}
-                                            className="h-56 border"
-                                            alt="Book cover"
-                                            style={{ width: '100%' }}
-                                        />
-                                        <div className="container p-3">
-                                            <h4 className="truncate-title text-ellipsis overflow-hidden whitespace-nowrap">
-                                                <b>{bookItem.title}</b>
-                                            </h4>
-                                            <p className="flex row">
-                                                Tác giả: <p className="uppercase">{bookItem.author}</p>
-                                            </p>
-                                        </div>
-                                    </div>
+                                    (dataBook._id == bookItem._id) ? '' : (
+                                        <a
+                                            href={'/book/detail/' + bookItem._id}
+                                            key={index}
+                                            className="card w-52 bg-gray-200 m-1"
+                                        >
+                                            <img
+                                                src={bookItem.img ? bookItem.img : notimg}
+                                                className="h-56 border"
+                                                alt="Book cover"
+                                                style={{ width: '100%' }}
+                                            />
+                                            <div className="container p-3">
+                                                <h4 className="truncate-title text-ellipsis overflow-hidden whitespace-nowrap">
+                                                    <b>{bookItem.title}</b>
+                                                </h4>
+                                                <p className="flex row">
+                                                    Tác giả: <p className="uppercase">{bookItem.author}</p>
+                                                </p>
+                                            </div>
+                                        </a>
+                                    )
                                 ))
                             ) : (
                                 <p>Không có sách cùng thể loại.</p>

@@ -66,13 +66,24 @@ const Navbar = () => {
                             <span>
                                 Xin chào, {username}!
                                 <button
-                                onClick={() => {authToken.deleteToken();
-                                    navigate("/");
-                                }}
-                                className="ml-2 bg-red-400 p-2 rounded-lg">Logout</button>
+                                    onClick={() => {
+                                        authToken.deleteToken();
+                                        navigate("/");
+                                    }}
+                                    className="ml-2 bg-red-400 p-2 rounded-lg">Logout</button>
                             </span>
                         ) : (
-                            <span>Đang tải thông tin...</span>
+                            <span>
+                                Đang tải thông tin...
+                                <button
+                                    onClick={() => {
+                                        authToken.deleteToken();
+                                        navigate("/");
+                                    }}
+                                    className="ml-2 bg-red-400 p-2 rounded-lg">
+                                    Logout
+                                </button>
+                            </span>
                         )}
                     </div>
                 )}
