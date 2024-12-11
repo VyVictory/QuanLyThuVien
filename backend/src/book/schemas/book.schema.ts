@@ -20,7 +20,6 @@ export class Book extends Document {
   @Prop()
   author: string;
   
-
   @Prop()
   publicationDate: string;
 
@@ -45,7 +44,7 @@ export class Book extends Document {
   @Prop({ type: Types.ObjectId, ref: 'User' })
   UpdateBy: Types.ObjectId;
 
-  @Prop({ type: [String], default: [] }) // Store image URLs
+  @Prop({ type: [String], default: [] }) 
   img: string[];
 
   @Prop({ default: 1 })
@@ -59,7 +58,12 @@ export class Book extends Document {
       {
         userId: { type: Types.ObjectId, ref: 'User' }, 
         borrowDate: { type: Date, required: true },
+        ExpectedReturn: { type: Date, required: true },
         returnDate: { type: Date, default: null },
+        status: { type: String,
+           default: 'are borrowing',
+           enum: ['are borrowing', 'returned', 'overdue'],
+          },
       },
     ],
     default: [],
@@ -67,6 +71,8 @@ export class Book extends Document {
   borrowHistory: {
     userId: Types.ObjectId;
     borrowDate: Date;
+    ExpectedReturn: Date;
+    status: string;
     returnDate: Date | null;
   }[];
   
