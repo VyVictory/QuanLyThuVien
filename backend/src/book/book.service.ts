@@ -216,6 +216,10 @@ export class BookService {
     return borrowedBook;
   }
   
+  async getRequestsForBook(): Promise<RequestBrrowBook[]> {
+    const requests = await this.RequestBrrowBookModel.find()
+    return requests
+  }
 
   // async requestBorrowBook(bookId: string, userId: string): Promise<Book> {
   //   // Tìm sách theo ID
