@@ -12,7 +12,8 @@ export default function Usermanagement() {
       try {
         setLoading(true)
         const response = await getAllUser();
-        setDataUser(response)
+        const sortedResponse = response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setDataUser(sortedResponse)
       } catch (error) {
         setError(error.message);
       } finally {
@@ -35,7 +36,7 @@ export default function Usermanagement() {
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-center">
-            <thead>
+            <thead className='border-b-2'>
               <tr>
                 <th class="px-4 py-2">Name</th>
                 <th class="px-4 py-2">Address</th>
@@ -48,7 +49,7 @@ export default function Usermanagement() {
                 <tr key={data._id}>
                   <td class="px-4 py-2"> {data.firstName} {data.lastName}</td>
                   <td class="px-4 py-2">{data.address}</td>
-                  <td class="px-4 py-2">{data.gender}</td>
+                  <td class="px-4 py-2">{data.gender ? "Male" : "Female"}</td>
                   <td class="px-4 py-2">{data.birthday}</td>
                 </tr>
               ))}

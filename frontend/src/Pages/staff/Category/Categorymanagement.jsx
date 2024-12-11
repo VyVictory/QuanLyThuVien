@@ -11,6 +11,8 @@ export default function Categorymanagement() {
     const [isSelected, setIsSelected] = useState(null);
     const [isModalOpenCreate, setIsModalOpenCreate] = useState(false);
     const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+
 
     //Effect
     useEffect(() => {
@@ -18,7 +20,8 @@ export default function Categorymanagement() {
             try {
                 setLoading(true);
                 const response = await getAllCategory();
-                setDataCategory(response);
+                const sortedResponse = response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                setDataCategory(sortedResponse);
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -48,6 +51,10 @@ export default function Categorymanagement() {
         setIsSelected(null)
     };
 
+    //search
+
+
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
     return (
@@ -55,14 +62,18 @@ export default function Categorymanagement() {
             <h1 class="text-3xl font-bold text-center mb-8">Category Management</h1>
             <div class="bg-card p-6 rounded-lg shadow-lg bg-white mx-10">
                 <div class="flex items-center justify-between mb-4 gap-2">
-                    <input type="text" placeholder="Search Borrow/Return..." class="w-full px-3 py-2 rounded-md bg-input text-primary placeholder-primary-foreground focus:outline-none focus:ring focus:ring-primary" />
+                    <input type="text"
+                        placeholder="Search Category..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        class="w-full px-3 py-2 rounded-md bg-input text-primary placeholder-primary-foreground focus:outline-none focus:ring focus:ring-primary" />
                     <button class="bg-sky-400 text-primary-foreground px-4 py-2 rounded-md hover:bg-sky-500">Search</button>
                     <button className="bg-emerald-500 text-primary-foreground px-4 py-2 rounded-md hover:bg-emerald-400" onClick={handleOpenModalCreate}>Add</button>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-center">
                         <thead>
-                            <tr className='bg-slate-200 border-2 border-double border-rose-950'>
+                            <tr className='border-b-2'>
                                 <th class="px-4 py-2">Name</th>
                                 <th class="px-4 py-2">Description</th>
                                 <th class="px-4 py-2">Action</th>
@@ -75,7 +86,7 @@ export default function Categorymanagement() {
                                 </tr>
                             ) : (
                                 dataCategory.map((data) => (
-                                    <tr key={data._id} className='border-2 border-dashed border-sky-400'>
+                                    <tr key={data._id} className='border-b-2'>
                                         <td class="px-4 py-2">{data.nameCate}</td>
                                         <td class="px-4 py-2">{data.decription}</td>
 

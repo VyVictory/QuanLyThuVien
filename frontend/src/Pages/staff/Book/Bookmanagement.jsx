@@ -17,7 +17,8 @@ export default function Bookmanagement() {
       try {
         setLoading(true)
         const response = await getAllBook();
-        setDataBook(response)
+        const sortedResponse = response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setDataBook(sortedResponse)
       }
       catch (error) {
         setError(error.message);
@@ -73,7 +74,7 @@ export default function Bookmanagement() {
         <div class="overflow-x-auto">
           <table class="w-full text-center">
             <thead>
-              <tr className='bg-slate-200 border-2 border-double border-rose-950'>
+              <tr className=' border-b-2'>
                 <th class="px-4 py-2">Image</th>
                 <th class="px-4 py-2">Name</th>
                 <th class="px-4 py-2">Author</th>
@@ -89,7 +90,7 @@ export default function Bookmanagement() {
                   </tr>
                 ) : (
                   dataBook.map((data) => (
-                    <tr key={data._id} className='border-2 border-dashed border-sky-400'>
+                    <tr key={data._id} className='border-b-2'>
                       <td class="px-4 py-2">
                         <img src={`${data.img}`} alt="" style={{ width: '80px', height: '80px' }} className='border-2 border-black' />
                       </td>
