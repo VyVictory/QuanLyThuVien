@@ -11,5 +11,4 @@ const getAllCategory = async () => {
 };
 export default {
     getAllCategory,
-
 }

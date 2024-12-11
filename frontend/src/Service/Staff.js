@@ -60,3 +60,11 @@ export async function getAllUser() {
     )
     return request.data
 }
+//Request
+export async function getAllRequest() {
+    const token = authToken.getToken();
+    var request = await axios.get(`http://localhost:3001/book/getAllRequests`,
+        { headers: { Authorization: `Bearer ${token}` }, }
+    )
+    return request.data
+}

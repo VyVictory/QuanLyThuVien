@@ -1,6 +1,16 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { getAllRequest } from '../../Service/Staff'
 export default function BorrowReturnmanagement() {
+  const [dataRequest, setDataRequest] = useState([])
+
+  useEffect(() => {
+    const fetchdata = async () => {
+      const response = await getAllRequest()
+      setDataRequest(response)
+    }
+    fetchdata()
+  }, [])
 
   return (
     <div class="w-full my-10">
@@ -15,21 +25,36 @@ export default function BorrowReturnmanagement() {
             <thead>
               <tr>
                 <th class="px-4 py-2">ID</th>
-                <th class="px-4 py-2">Name</th>
-                <th class="px-4 py-2">Role</th>
+                <th class="px-4 py-2">ID user</th>
+                <th class="px-4 py-2">ID book</th>
+                <th class="px-4 py-2">requested Date</th>
+                <th class="px-4 py-2">Status</th>
                 <th class="px-4 py-2">Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td class="px-4 py-2">1</td>
-                <td class="px-4 py-2">John Doe</td>
-                <td class="px-4 py-2">Admin</td>
-                <td class="px-4 py-2">
-                  <button class="bg-teal-400 px-3 py-1 rounded-md mr-2 hover:bg-secondary/80">Edit</button>
-                  <button class="bg-red-400 text-destructive-foreground px-3 py-1 rounded-md hover:bg-destructive/80">Delete</button>
-                </td>
-              </tr>
+              {dataRequest.length === 0 ?
+                (
+                  <tr>
+                    <td colSpan="2" class="px-4 py-2 text-center">NO DATA</td>
+                  </tr>
+                ) : (
+                  dataRequest.map((data) => (
+                    <tr key={data._id} className='border-b-2'>
+                      <td class="px-4 py-2">{data._id}</td>
+                      <td class="px-4 py-2">{data.user}</td>
+                      <td class="px-4 py-2">{data.book}</td>
+                      <td class="px-4 py-2">{data.requestedDate}</td>
+                      <td class="px-4 py-2">{data.status}</td>
+                      <td class="px-4 py-2 flex">
+
+                        <button class="bg-teal-400 px-3 py-1 rounded-md mr-2 hover:bg-secondary/80">Comfirm</button>
+                        <button class="bg-red-400 text-destructive-foreground px-3 py-1 rounded-md hover:bg-destructive/80">Cancel</button>
+                      </td>
+                    </tr>
+                  ))
+                )
+              }
             </tbody>
           </table>
         </div>
