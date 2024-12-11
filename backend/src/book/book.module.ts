@@ -7,6 +7,8 @@ import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 import { AuthModule } from '../auth/auth.module';
 import { Category } from '../category/schema/category.schema';
 import { CategoryModule } from 'src/category/category.module';
+import { RequestBrrowBookSchema } from './schemas/requestBrrowBook.schema';
+import { ScheduleModule } from '@nestjs/schedule';
 
 
 @Module({
@@ -14,7 +16,10 @@ import { CategoryModule } from 'src/category/category.module';
     CloudinaryModule,
     AuthModule,
   CategoryModule,
-  MongooseModule.forFeature([{ name: 'Book', schema: BookSchema }]),],
+  MongooseModule.forFeature([{ name: 'Book', schema: BookSchema }]),
+  MongooseModule.forFeature([{ name: 'RequestBrrowBook', schema: RequestBrrowBookSchema }]),
+  ScheduleModule.forRoot()
+],
   controllers: [BookController],
   providers: [BookService]
 })

@@ -2,23 +2,53 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model, Types } from 'mongoose';
 import { Book } from './schemas/book.schema';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { CreateBookDto } from './dto/createBook.dto';
 import { promises } from 'dns';
 import { UpdateBookDto } from './dto/updateBook.dto';
 import { JwtService } from '@nestjs/jwt';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import { User } from 'src/auth/Schemas/user.schema';
+import { User } from '../auth/Schemas/user.schema';
+import { RequestBrrowBook } from './schemas/requestBrrowBook.schema';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class BookService {
     constructor(
         @InjectModel(Book.name) private BookModel: Model<Book>,
         @InjectModel(User.name) private UserModel: Model<User>,
+        @InjectModel('RequestBrrowBook') private RequestBrrowBookModel: Model<RequestBrrowBook>,
         private authService: AuthService,
         private jwtService: JwtService,
         private cloudinaryService: CloudinaryService,
       ) {}
+
+
+      @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+      async updateBookStatus() {
+        const currentDate = new Date();
+
+        const books = await this.BookModel.find({ 'borrowHistory.status': 'are borrowing'});
+        for (const book of books) {
+          // Kiểm tra từng bản ghi mượn sách
+          for (const borrow of book.borrowHistory) {
+            if (
+              borrow.status === 'are borrowing' && // Trạng thái mượn sách
+              borrow.ExpectedReturn < currentDate && // Ngày trả dự kiến đã qua
+              !borrow.returnDate // Chưa có ngày trả
+            ) {
+              // Cập nhật trạng thái thành 'overdue' nếu quá hạn
+              borrow.status = 'overdue';
+            }
+          }
+    
+          // Lưu lại sách sau khi cập nhật trạng thái
+          await book.save();
+        }
+    
+        console.log('Checked for overdue books and updated statuses.');
+      }
+      
     
 
       async createBook(createBookDto: CreateBookDto, userId: string, files?: Express.Multer.File[]): Promise<Book> {
@@ -80,28 +110,112 @@ export class BookService {
       }
 
 
-      // cái này là xác nhận mượn sách cái này chỉ có admin hoặc thủ thư mới được xác nhận
+      
   async borrowBook(bookId: string, userId: string): Promise<Book> {
-    // Tìm sách theo ID
     const book = await this.BookModel.findById(bookId);
     if (!book) {
       throw new HttpException('Book not found', HttpStatus.NOT_FOUND);
     }
-
     if (book.copies <= book.borrowedCopies) {
       throw new HttpException('No copies available to borrow', HttpStatus.BAD_REQUEST);
     }
-
     book.borrowedCopies += 1;
     const userIdOBJ = new Types.ObjectId(userId);
+    const borrowDate = new Date();
+    const ExpectedReturn = new Date(borrowDate.getTime() + 14 * 24 * 60 * 60 * 1000);
     
     book.borrowHistory.push({
       userId: userIdOBJ,
       borrowDate: new Date(),
+      ExpectedReturn : ExpectedReturn,
+      status: 'are borrowing',
       returnDate: null, 
     });
     return await book.save();
   }
+
+    async requestBorrowBook(bookId: string, userId: string, appointmentDate: Date ): Promise<RequestBrrowBook>{
+
+      const book = await this.BookModel.findById(bookId);
+      if (!book) {
+        console.log(bookId);
+        throw new HttpException('Book not found', HttpStatus.NOT_FOUND);
+      }
+      const user = await this.UserModel.findById(userId);
+      if(!user){
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+
+      const currentDate = new Date();
+      const maxDate = new Date(currentDate.getTime() + 4 * 24 * 60 * 60 * 1000);
+
+      if (new Date(appointmentDate) > maxDate) {
+        throw new HttpException('Appointment date cannot be more than 4 days from today', HttpStatus.BAD_REQUEST);
+      }
+
+      
+      const request = await this.RequestBrrowBookModel.create({
+        user: userId,
+        book: bookId,
+        requestedDate: new Date(),
+        appointmentDate : maxDate,
+        status: 'pending',
+      });
+
+      return request;
+  }
+
+  async approveRequest(requestId: string,): Promise<RequestBrrowBook> {
+    const request = await this.RequestBrrowBookModel.findById(requestId);
+    if (!request) {
+      throw new HttpException('Request not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (request.status !== 'pending') {
+      throw new HttpException('Request has already been processed', HttpStatus.BAD_REQUEST);
+    }
+    
+    request.status = 'approved';
+    request.responseDate = new Date();
+    return await request.save();
+  }
+
+  async rejectRequest(requestId: string, notes: string): Promise<RequestBrrowBook> {
+    const request = await this.RequestBrrowBookModel.findById(requestId);
+    if (!request) {
+      throw new HttpException('Request not found', HttpStatus.NOT_FOUND);
+    }
+    if (request.status !== 'pending') {
+      throw new HttpException('Request has already been processed', HttpStatus.BAD_REQUEST);
+    }
+    request.status = 'rejected';
+    request.responseDate = new Date();
+    request.notes = notes;
+    return await request.save();
+  }
+
+  async borrowBookWithRequest(requestId: string): Promise<Book> {
+    const request = await this.RequestBrrowBookModel.findById(requestId);
+    if (!request) {
+      throw new HttpException('Request not found', HttpStatus.NOT_FOUND);
+    }
+  
+    if (request.status !== 'approved') {
+      throw new HttpException('Request has not been approved', HttpStatus.BAD_REQUEST);
+    }
+  
+    // Gọi hàm borrowBook để xử lý việc mượn sách
+    const borrowedBook = await this.borrowBook(request.book.toString(), request.user.toString());
+  
+    // Cập nhật trạng thái của request thành "borrowed"
+    request.status = 'borrowed';
+    request.responseDate = new Date();
+    await request.save();
+  
+    
+    return borrowedBook;
+  }
+  
 
   // async requestBorrowBook(bookId: string, userId: string): Promise<Book> {
   //   // Tìm sách theo ID

@@ -135,4 +135,64 @@ export class BookController {
     ){
         return this.bookService.getBooksByCategory(category);
     }
+
+    @Post('requestBorrow/:bookId')
+    @UseGuards(AuthGuardD)
+    async requestBorrow(
+        @CurrentUser() currentUser: User,
+        @Param('bookId') bookId: string,
+        @Body('appointmentDate') appointmentDate: Date
+    ){
+        if (!currentUser) {
+            throw new HttpException('User not found or not authenticated', HttpStatus.UNAUTHORIZED);
+        }
+        
+        return this.bookService.requestBorrowBook(bookId,currentUser._id.toString(),appointmentDate)
+    }
+
+    @Put('approveRequestBorrow/:requestId')
+    @UseGuards(new RolesGuard(['0','2']))
+    @UseGuards(AuthGuardD)
+    async approveRequestBorrow(
+        @CurrentUser() currentUser: User,
+        @Param('requestId') request: string,
+        
+    ){
+        if (!currentUser) {
+            throw new HttpException('User not found or not authenticated', HttpStatus.UNAUTHORIZED);
+        }
+        
+        return this.bookService.approveRequest(request)
+    }
+
+    @Put('rejectRequestBorrow/:requestId')
+    @UseGuards(new RolesGuard(['0','2']))
+    @UseGuards(AuthGuardD)
+    async rejectRequestBorrow(
+        @CurrentUser() currentUser: User,
+        @Param('requestId') request: string,
+        @Body('notes') notes: string
+        
+    ){
+        if (!currentUser) {
+            throw new HttpException('User not found or not authenticated', HttpStatus.UNAUTHORIZED);
+        }
+        return this.bookService.rejectRequest(request,notes)
+    }
+
+    @Put('borrowRequestBorrow/:requestId')
+    @UseGuards(new RolesGuard(['0','2']))
+    @UseGuards(AuthGuardD)
+    async borrowRequestBorrow(
+        @CurrentUser() currentUser: User,
+        @Param('requestId') request: string,
+
+    ){
+        if (!currentUser) {
+            throw new HttpException('User not found or not authenticated', HttpStatus.UNAUTHORIZED);
+        }
+        return this.bookService.borrowBookWithRequest(request)
+    }
+
+    
 }
