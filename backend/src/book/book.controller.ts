@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CurrentUser } from '../auth/decorator/current.user';
 import { User } from '../auth/Schemas/user.schema';
+import { get } from 'http';
 
 @Controller('book')
 export class BookController {
@@ -201,4 +202,60 @@ export class BookController {
         return this.bookService.getRequestsForBook();
     }
     
+    @Get('getMyHistoryBrrowed')
+    @UseGuards(AuthGuardD)
+    async getMyHistoryBrrowed(
+        @CurrentUser() currentUser: User
+    ){
+        if (!currentUser) {
+            throw new HttpException('User not found or not authenticated', HttpStatus.UNAUTHORIZED);
+        }
+        return this.bookService.getMyHistoryBrrowed(currentUser._id.toString())
+    }
+
+    @Get('getMyBrrowedoverdue')
+    @UseGuards(AuthGuardD)
+    async getMyBrrowedoverdue(
+        @CurrentUser() currentUser: User
+    ){
+        if (!currentUser) {
+            throw new HttpException('User not found or not authenticated', HttpStatus.UNAUTHORIZED);
+        }
+        return this.bookService.getMyBorrowedOverdue(currentUser._id.toString())
+    }
+
+    @Get('getMyBrrowed')
+    @UseGuards(AuthGuardD)
+    async getMyBrrowed(
+        @CurrentUser() currentUser: User
+    ){
+        if (!currentUser) {
+            throw new HttpException('User not found or not authenticated', HttpStatus.UNAUTHORIZED);
+        }
+        return this.bookService.getMyBorrowed(currentUser._id.toString())
+    }
+
+    @Get('getMyBorrowedReturned')
+    @UseGuards(AuthGuardD)
+    async getMyBorrowedReturned(
+        @CurrentUser() currentUser: User
+    ){
+        if (!currentUser) {
+            throw new HttpException('User not found or not authenticated', HttpStatus.UNAUTHORIZED);
+        }
+        return this.bookService.getMyBorrowedReturned(currentUser._id.toString())
+    }
+
+    @Get('getMyRequest')
+    @UseGuards(AuthGuardD)
+    async getMyRequest(
+        @CurrentUser() currentUser: User
+    ){
+        if (!currentUser) {
+            throw new HttpException('User not found or not authenticated', HttpStatus.UNAUTHORIZED);
+        }
+        return this.bookService.getMyRequests(currentUser._id.toString())
+    }
+
+
 }

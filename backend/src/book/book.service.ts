@@ -335,7 +335,110 @@ export class BookService {
     return books;
 }
 
-  
+  async getMyHistoryBrrowed(userId: string): Promise<any[]> {
 
+    const userObjectId = new Types.ObjectId(userId);
+
+    const books = await this.BookModel.find({
+        'borrowHistory.userId': userObjectId,
+    }).select('title borrowHistory');
+
+    if (!books || books.length === 0) {
+        throw new HttpException('No borrow history found for this user', HttpStatus.NOT_FOUND);
+    }
+
+    const history = books.map((book) => ({
+        title: book.title,
+        borrowHistory: book.borrowHistory.filter(
+            (record) => record.userId.toString() === userId
+        ),
+    }));
+
+    return history;
+  }
+
+  async getMyBorrowedOverdue(userId: string): Promise<any[]> {
+    const userObjectId = new Types.ObjectId(userId);
+
+    // Lấy tất cả các sách mà user đã mượn
+    const books = await this.BookModel.find({
+        'borrowHistory.userId': userObjectId,
+    });
+
+    if (!books || books.length === 0) {
+        throw new HttpException('No borrow history found for this user', HttpStatus.NOT_FOUND);
+    }
+
+    // Lọc danh sách sách có bản ghi overdue
+    const overdueBooks = books
+        .map((book) => ({
+            title: book.title,
+            overdueHistory: book.borrowHistory.filter(
+                (record) =>
+                    record.userId.toString() === userId && record.status === 'overdue'
+            ),
+        }))
+        .filter((entry) => entry.overdueHistory.length > 0); // Chỉ giữ lại sách có lịch sử overdue
+
+    return overdueBooks;
+}
+
+    async getMyBorrowed(userId: string): Promise<any[]> {
+      const userObjectId = new Types.ObjectId(userId);
+
+      // Lấy tất cả các sách mà user đã mượn
+      const books = await this.BookModel.find({
+          'borrowHistory.userId': userObjectId,
+      });
+
+      if (!books || books.length === 0) {
+          throw new HttpException('No borrow history found for this user', HttpStatus.NOT_FOUND);
+      }
+
+      // Lọc danh sách sách có bản ghi đang mượn
+      const borrowedBooks = books
+          .map((book) => ({
+              title: book.title,
+              borrowedHistory: book.borrowHistory.filter(
+                  (record) =>
+                      record.userId.toString() === userId && record.status === 'are borrowing'
+              ),
+          }))
+          .filter((entry) => entry.borrowedHistory.length > 0); // Chỉ giữ lại sách có lịch sử đang mượn
+
+      return borrowedBooks;
+
+    }
+
+    async getMyBorrowedReturned(userId: string): Promise<any[]> {
+      const userObjectId = new Types.ObjectId(userId);
+
+      // Lấy tất cả các sách mà user đã mượn
+      const books = await this.BookModel.find({
+          'borrowHistory.userId': userObjectId,
+      });
+
+      if (!books || books.length === 0) {
+          throw new HttpException('No borrow history found for this user', HttpStatus.NOT_FOUND);
+      }
+
+      // Lọc danh sách sách có bản ghi đã trả
+      const returnedBooks = books
+          .map((book) => ({
+              title: book.title,
+              returnedHistory: book.borrowHistory.filter(
+                  (record) =>
+                      record.userId.toString() === userId && record.status === 'returned'
+              ),
+          }))
+          .filter((entry) => entry.returnedHistory.length > 0); // Chỉ giữ lại sách có lịch sử đã trả
+
+      return returnedBooks;
+    }
+
+  async getMyRequests(userId: string): Promise<RequestBrrowBook[]> {
+    const userObjectId = new Types.ObjectId(userId);
+    return await this.RequestBrrowBookModel.find({ user: userObjectId });
+  }
     
 }
