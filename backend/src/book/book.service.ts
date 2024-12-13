@@ -134,7 +134,7 @@ export class BookService {
     return await book.save();
   }
 
-    async requestBorrowBook(bookId: string, userId: string, appointmentDate: Date ): Promise<RequestBrrowBook>{
+    async requestBorrowBook(bookId: string, userId: string, appointmentDate: Date): Promise<RequestBrrowBook>{
 
       const book = await this.BookModel.findById(bookId);
       if (!book) {
