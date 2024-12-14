@@ -68,3 +68,18 @@ export async function getAllRequest() {
     )
     return request.data
 }
+export async function comfirmRequest(requestId) {
+    const token = authToken.getToken();
+    const request = await axios.put(`http://localhost:3001/book/approveRequestBorrow/${requestId}`, {},
+        { headers: { Authorization: `Bearer ${token}` }, }
+    )
+    return request
+}
+
+export async function rejectRequest(requestId) {
+    const token = authToken.getToken();
+    var request = await axios.put(`http://localhost:3001/book/rejectRequestBorrow/${requestId}`, {},
+        { headers: { Authorization: `Bearer ${token}` }, }
+    )
+    return request
+}
