@@ -31,7 +31,7 @@ const Navbar = () => {
     return (
         <div className="fixed">
 
-            <div className="w-screen h-12 bg-blue-400 flex items-center justify-around ">
+            <div className="w-screen h-12 bg-[#91DDCF] flex items-center justify-around ">
                 <a href="/" className="uppercase font-bold flex-none text-white text-xl">
                     thư viện online
                 </a>

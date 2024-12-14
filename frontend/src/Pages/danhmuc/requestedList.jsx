@@ -1,38 +1,50 @@
 import * as React from 'react';
 import { useState } from 'react';
+import imgBook from './notbook.png';
+// Example image URLs (update this with actual image paths)
+const posterImages = [
+    'poster1.png', 'poster2.png', 'poster3.png', 'poster4.png', // etc.
+];
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
+function createData(poster, bookName, borrowDate, returnStatus, returnTime) {
+    return { poster, bookName, borrowDate, returnStatus, returnTime };
 }
 
 const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+    createData(imgBook, 'Frozen yoghurt', '01/12/2024', 'Đang mượn', '12/12/2024'),
+    createData(imgBook, 'Ice cream sandwich', '02/12/2024', 'Đã trả', '13/12/2024'),
+    createData(imgBook, 'Chocolate bar', '03/12/2024', 'Quá hạn', '14/12/2024'),
     ...Array.from({ length: 95 }, (_, index) =>
-        createData(`Item ${index + 3}`, 100 + index, 5 + index * 0.1, 20 + index, 3.0)
+        createData(
+            imgBook, // Loop through the images array
+            `Book ${index + 4}`,
+            `${String((index % 30) + 1).padStart(2, '0')}/12/2024`,
+            index % 3 === 0 ? 'Đang mượn' : index % 3 === 1 ? 'Đã trả' : 'Quá hạn',
+            `${String(((index + 12) % 30) + 1).padStart(2, '0')}/12/2024`
+        )
     ),
 ];
 
-export default function RequestedList() {
-    const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
-    const itemsPerPage = 10; // Số hàng mỗi trang
-    const totalPages = Math.ceil(rows.length / itemsPerPage); // Tổng số trang
-    const maxPageButtons = 4; // Số nút hiển thị tối đa
+export default function BorrowingList() {
+    const [currentPage, setCurrentPage] = useState(1); // Current page
+    const itemsPerPage = 10; // Rows per page
+    const totalPages = Math.ceil(rows.length / itemsPerPage); // Total pages
+    const maxPageButtons = 4; // Max buttons to display
 
-    // Tính toán dữ liệu hiển thị trên mỗi trang
+    // Rows to display per page
     const displayedRows = rows.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
 
-    // Chuyển trang
+    // Change page handler
     const handlePageChange = (page) => {
         if (page > 0 && page <= totalPages) {
             setCurrentPage(page);
         }
     };
 
-    // Tạo danh sách nút phân trang
+    // Generate pagination buttons
     const generatePageNumbers = () => {
         const pageNumbers = [];
         const startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
@@ -47,9 +59,25 @@ export default function RequestedList() {
         return pageNumbers;
     };
 
+    // Get styles for status
+    const getStatusStyles = (status) => {
+        const baseStyles =
+            'px-3 py-1 text-sm font-medium border rounded-sm text-center inline-block w-32 h-8'; // Fixed width 6rem
+        switch (status) {
+            case 'Đã trả':
+                return `${baseStyles} text-green-600 border-green-600 bg-green-100`;
+            case 'Quá hạn':
+                return `${baseStyles} text-red-600 border-red-600 bg-red-100`;
+            case 'Đang mượn':
+                return `${baseStyles} text-white border-gray-700 bg-gray-300`;
+            default:
+                return baseStyles;
+        }
+    };
+
     return (
-        <div className="pt-12 px-5">
-             <div className="p-5 text-lg">
+        <div className="pt-12 px-5 min-h-screen">
+            <div className="p-5 text-lg">
                 <strong>Danh sách đang mượn</strong>
             </div>
             <table className="w-full min-h-full">
@@ -66,17 +94,25 @@ export default function RequestedList() {
                 <tbody>
                     {displayedRows.map((row, index) => (
                         <tr key={index} className="text-center border-b">
-                            <td className="py-2">{(currentPage - 1) * itemsPerPage + index + 1}</td>
-                            <td>{row.name}</td>
-                            <td>{row.calories}</td>
-                            <td>{row.fat}</td>
-                            <td>{row.carbs}</td>
-                            <td>{row.protein}</td>
+                            <td className="py-2">
+                                {(currentPage - 1) * itemsPerPage + index + 1}
+                            </td>
+                            <td>
+                                <img src={row.poster} alt="Book poster" className="w-12 h-12 object-cover" />
+                            </td>
+                            <td>{row.bookName}</td>
+                            <td>{row.borrowDate}</td>
+                            <td>
+                                <span className={getStatusStyles(row.returnStatus)}>
+                                    {row.returnStatus}
+                                </span>
+                            </td>
+                            <td>{row.returnTime}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <div className="mt-4 flex justify-center gap-2 float-end h-full">
+            <div className="mt-4 flex justify-center gap-2 float-end fixed bottom-6 right-6">
                 <button
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
@@ -89,7 +125,9 @@ export default function RequestedList() {
                         <button
                             key={index}
                             onClick={() => handlePageChange(page)}
-                            className={`px-3 py-1 rounded ${currentPage === page ? 'bg-blue-500 text-white' : 'bg-gray-200'
+                            className={`px-3 py-1 rounded ${currentPage === page
+                                ? 'bg-blue-500 text-white'
+                                : 'bg-gray-200'
                                 }`}
                         >
                             {page}

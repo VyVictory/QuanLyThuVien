@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom"; // Import useLocation to get current path
 import category from "../../Service/category";
+import authToken from "../../components/authToken";
 // import { useOutletContext } from "react-router-dom";
 
 const LeftBar = ({ select, dataName }) => {
@@ -71,24 +72,31 @@ const LeftBar = ({ select, dataName }) => {
                     )}
 
                     {/* Other sections that will always be visible */}
-                    <div className="flex row items-center pt-4">
-                        <div className="w-4 border-b-2 border-white "></div>
-                        <a className={`${thisPage=='requestlist'?'bg-blue-500':'bg-[#F19ED2]'}  w-full p-2 rounded-2xl h-11`} href="/requestlist">
-                            <button className="w-full">Danh sách yêu cầu mượn</button>
-                        </a>
-                    </div>
-                    <div className="flex row items-center pt-4">
-                        <div className="w-4 border-b-2 border-white "></div>
-                        <a className={`${thisPage=='requestedlist'?'bg-blue-500':'bg-[#F19ED2]'}  w-full p-2 rounded-2xl h-11`} href="/requestedlist">
-                            <button className="w-full">Danh sách đang mượn</button>
-                        </a>
-                    </div>
-                    <div className="flex row items-center pt-4">
-                        <div className="w-4 border-b-2 border-white "></div>
-                        <a className={`${thisPage=='historyrequestlist'?'bg-blue-500':'bg-[#F19ED2]'}  w-full p-2 rounded-2xl h-11`} href="/historyrequestlist">
-                            <button className="w-full">Lịch sử mượn sách</button>
-                        </a>
-                    </div>
+                    {
+                        authToken.getToken() && (
+                            <>
+                                <div className="flex row items-center pt-4">
+                                    <div className="w-4 border-b-2 border-white "></div>
+                                    <a className={`${thisPage === 'requestlist' ? 'bg-blue-500' : 'bg-[#F19ED2]'} w-full p-2 rounded-2xl h-11`} href="/requestlist">
+                                        <button className="w-full">Danh sách yêu cầu mượn</button>
+                                    </a>
+                                </div>
+                                <div className="flex row items-center pt-4">
+                                    <div className="w-4 border-b-2 border-white "></div>
+                                    <a className={`${thisPage === 'requestedlist' ? 'bg-blue-500' : 'bg-[#F19ED2]'} w-full p-2 rounded-2xl h-11`} href="/requestedlist">
+                                        <button className="w-full">Danh sách đang mượn</button>
+                                    </a>
+                                </div>
+                                <div className="flex row items-center pt-4">
+                                    <div className="w-4 border-b-2 border-white "></div>
+                                    <a className={`${thisPage === 'historyrequestlist' ? 'bg-blue-500' : 'bg-[#F19ED2]'} w-full p-2 rounded-2xl h-11`} href="/historyrequestlist">
+                                        <button className="w-full">Lịch sử mượn sách</button>
+                                    </a>
+                                </div>
+                            </>
+                        )
+                    }
+
                 </div>
             </div>
         </>
