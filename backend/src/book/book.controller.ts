@@ -138,6 +138,13 @@ export class BookController {
         return this.bookService.getBooksByCategory(category);
     }
 
+    @Get('getbookbyTitle/:title')
+    async getBookByTitle(
+        @Param('title') title: string
+    ){
+        return this.bookService.findBookByTitle(title);
+    }
+
     @Post('requestBorrow/:bookId')
     @UseGuards(AuthGuardD)
     async requestBorrow(

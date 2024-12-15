@@ -17,7 +17,7 @@ export class Book extends Document {
 
   @Prop({  
     type: Types.ObjectId, ref: 'Category' })
-  category: Category; 
+    category: Category; 
 
   @Prop()
   author: string;
