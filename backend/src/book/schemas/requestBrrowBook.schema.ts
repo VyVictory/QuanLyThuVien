@@ -1,5 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Types, Document } from 'mongoose';
+import { User } from 'src/auth/Schemas/user.schema';
+import { Book } from './book.schema';
 
 
 @Schema({
@@ -8,10 +10,10 @@ import { Types, Document } from 'mongoose';
 export class RequestBrrowBook extends Document {
 
     @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-    user: Types.ObjectId;
+    user: User;
 
     @Prop({ type: Types.ObjectId, ref: 'Book', required: true })
-    book: Types.ObjectId;
+    book: Book;
 
     @Prop({ required: true })
     requestedDate: Date;

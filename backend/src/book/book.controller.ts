@@ -10,6 +10,7 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { CurrentUser } from '../auth/decorator/current.user';
 import { User } from '../auth/Schemas/user.schema';
 import { get } from 'http';
+import { ObjectId } from 'mongoose';
 
 @Controller('book')
 export class BookController {
@@ -65,7 +66,7 @@ export class BookController {
   }
 
 
-  @Put('borrowBook/:bookId')
+  @Post('borrowBook/:bookId')
   @UseGuards(new RolesGuard(['0','2'])) 
   @UseGuards(AuthGuardD)
     async borrowBook(

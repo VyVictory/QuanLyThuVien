@@ -1,5 +1,6 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Types, Document } from 'mongoose';
+import { User } from 'src/auth/Schemas/user.schema';
 
 @Schema({
   timestamps: true,
@@ -21,10 +22,10 @@ export class Category extends Document {
 //   parentCategoryId: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'User' })
-  createby: Types.ObjectId;
+  createby: User;
 
   @Prop({ type: Types.ObjectId, ref: 'User' })
-  UpdateBy: Types.ObjectId;
+  UpdateBy: User;
 
 
 }
