@@ -401,6 +401,35 @@ export class BookService {
   }
   
   
+  async getMyBorrowedAreBrrowing(userId: string): Promise<any[]> {
+    const userObjectId = new Types.ObjectId(userId);
+  
+    const overdueHistory = await this.BorrowHistoryModel.find({
+      userId: userObjectId,
+      status: 'are borrowing',
+    })
+    .populate({
+      path: 'bookId',
+      select: 'title',
+    })
+    .exec();
+  
+    // Kiểm tra nếu không có lịch sử mượn
+    if (!overdueHistory || overdueHistory.length === 0) {
+      throw new HttpException('No borrow history found for this user', HttpStatus.NOT_FOUND);
+    }
+  
+    // Lặp qua từng lịch sử mượn và lấy thông tin sách
+    const overdueBooks = overdueHistory.map((history) => ({
+      title: history.bookId?.title || 'Book information unavailable', // Sử dụng optional chaining để xử lý trường hợp bookId không tồn tại
+      borrowDate: history.borrowDate,
+      expectedReturn: history.expectedReturn,
+      returnDate: history.returnDate,
+      status: history.status,
+    }));
+  
+    return overdueBooks;
+  }
   
   
   
@@ -418,7 +447,7 @@ export class BookService {
         select: 'title', // Lấy trường title từ Book
       })
       .exec();
-  
+      
     // Kiểm tra nếu không có lịch sử quá hạn
     if (!overdueHistory || overdueHistory.length === 0) {
       throw new HttpException('No overdue borrow history found for this user', HttpStatus.NOT_FOUND);
@@ -505,7 +534,7 @@ export class BookService {
 
   async getMyRequests(userId: string): Promise<RequestBrrowBook[]> {
     const userObjectId = new Types.ObjectId(userId);
-    return await this.RequestBrrowBookModel.find({ user: userObjectId });
+    return await this.RequestBrrowBookModel.find({ user: userId });
   }
     
 }

@@ -225,6 +225,18 @@ export class BookController {
         return this.bookService.getMyBorrowedOverdue(currentUser._id.toString())
     }
 
+
+    @Get('getMyBrrowedAreBrrowing')
+    @UseGuards(AuthGuardD)
+    async getMyBorrowedAreBrrowing(
+        @CurrentUser() currentUser: User
+    ){
+        if (!currentUser) {
+            throw new HttpException('User not found or not authenticated', HttpStatus.UNAUTHORIZED);
+        }
+        return this.bookService.getMyBorrowedAreBrrowing(currentUser._id.toString())
+    }
+
     @Get('getMyBrrowed')
     @UseGuards(AuthGuardD)
     async getMyBrrowed(
