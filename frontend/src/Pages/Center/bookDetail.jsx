@@ -96,7 +96,6 @@ const BookDetail = () => {
                             </button>
                         </div>
                     </div>
-
                     {/* Hiển thị sách cùng thể loại */}
                     <div className="w-[80%] mt-5 bg-gray-300 p-5 mb-4">
                         <div className="flex flex-wrap gap-5 overflow-x-auto">

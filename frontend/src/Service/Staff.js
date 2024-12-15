@@ -17,11 +17,16 @@ export async function createCategory(categoryData) {
     return request.data
 }
 export async function getCategoryById(id) {
-    const token = authToken.getToken();
-    var request = await axios.get(`http://localhost:3001/category/getCategoryById/${id}`,
-        { headers: { Authorization: `Bearer ${token}` }, }
-    )
-    return request.data
+    try {
+        const token = authToken.getToken();
+        var request = await axios.get(`http://localhost:3001/category/getCategoryById/${id}`,
+            { headers: { Authorization: `Bearer ${token}` }, }
+        )
+        return request.data
+    } catch (error) {
+
+    }
+
 }
 export async function updateCategory(id, categoryData) {
     const token = authToken.getToken();

@@ -10,10 +10,15 @@ export default function UpdateCategoryForm({ openModal, handleCloseModal, Catego
         async function fetchCategory() {
             if (CategoryId) {
                 const category = await getCategoryById(CategoryId);
-                setDataCategory({
-                    nameCate: category.nameCate,
-                    decription: category.decription
-                });
+                if (category) {
+                    setDataCategory({
+                        nameCate: category.nameCate,
+                        decription: category.decription
+                    });
+                }else{
+                    
+                }
+
             }
         }
         fetchCategory();
