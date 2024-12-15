@@ -505,7 +505,7 @@ export class BookService {
 
   async getMyRequests(userId: string): Promise<RequestBrrowBook[]> {
     const userObjectId = new Types.ObjectId(userId);
-    return await this.RequestBrrowBookModel.find({ user: userObjectId });
+    return await this.RequestBrrowBookModel.find({ user: userId });
   }
     
 }

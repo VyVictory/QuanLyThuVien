@@ -1,42 +1,67 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import imgBook from './notbook.png';
+import axios from './axios';
+
+// Helper function to format API data into rows
 function createData(poster, bookName, borrowDate, returnStatus, returnTime) {
     return { poster, bookName, borrowDate, returnStatus, returnTime };
 }
 
-const rows = [
-    createData(imgBook, 'Frozen yoghurt', '01/12/2024', 'Đang mượn', '12/12/2024'),
-    createData(imgBook, 'Ice cream sandwich', '02/12/2024', 'Đã trả', '13/12/2024'),
-    createData(imgBook, 'Chocolate bar', '03/12/2024', 'Quá hạn', '14/12/2024'),
-    ...Array.from({ length: 95 }, (_, index) =>
-        createData(
-            imgBook,
-            `Book ${index + 4}`,
-            `${String((index % 30) + 1).padStart(2, '0')}/12/2024`,
-            index % 3 === 0 ? 'Đang mượn' : index % 3 === 1 ? 'Đã trả' : 'Quá hạn',
-            `${String(((index + 12) % 30) + 1).padStart(2, '0')}/12/2024`
-        )
-    ),
-];
-
 export default function BorrowingList() {
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const [rows, setRows] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const itemsPerPage = 10; // Rows per page
     const totalPages = Math.ceil(rows.length / itemsPerPage);
     const maxPageButtons = 4;
 
-    const displayedRows = rows.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-    );
+    // Fetch data from API
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.getMyRequests(); // API call
+                if (res.success) {
+                    const fetchedRows = res.data.map((request, index) => {
+                        const statusMap = {
+                            pending: 'Đang mượn',
+                            approved: 'Đã trả',
+                            rejected: 'Quá hạn',
+                        };
 
+                        return createData(
+                            imgBook, // Default image
+                            `Sách ${index + 1}`, // Fallback title
+                            new Date(request.requestedDate).toLocaleDateString('vi-VN'), // Format borrow date
+                            statusMap[request.status] || 'Không rõ', // Map status
+                            request.responseDate
+                                ? new Date(request.responseDate).toLocaleDateString('vi-VN')
+                                : 'Chưa có' // Format response date
+                        );
+                    });
+                    setRows(fetchedRows);
+                } else {
+                    setRows([]);
+                }
+            } catch (error) {
+                console.error('Error fetching requests:', error);
+                setRows([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+
+    // Handle page change
     const handlePageChange = (page) => {
         if (page > 0 && page <= totalPages) {
             setCurrentPage(page);
         }
     };
 
+    // Generate pagination buttons
     const generatePageNumbers = () => {
         const pageNumbers = [];
         const startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
@@ -51,6 +76,7 @@ export default function BorrowingList() {
         return pageNumbers;
     };
 
+    // Style classes for status badges
     const getStatusStyles = (status) => {
         const baseStyles =
             'px-3 py-1 text-sm font-medium border rounded-sm text-center inline-block w-32 h-8';
@@ -66,10 +92,20 @@ export default function BorrowingList() {
         }
     };
 
+    // Display rows for the current page
+    const displayedRows = rows.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
+    if (loading) {
+        return <div className="text-center py-10">Đang tải...</div>;
+    }
+
     return (
         <div className="pt-12 px-5 min-h-screen">
             <div className="p-5 text-lg">
-                <strong>Danh sách đang mượn</strong>
+                <strong>Lịch sử mượn sách</strong>
             </div>
             <table className="w-full min-h-full">
                 <thead>
@@ -89,7 +125,11 @@ export default function BorrowingList() {
                                 {(currentPage - 1) * itemsPerPage + index + 1}
                             </td>
                             <td>
-                                <img src={row.poster} alt="Book poster" className="w-12 h-12 object-cover" />
+                                <img
+                                    src={row.poster}
+                                    alt="Book poster"
+                                    className="w-12 h-12 object-cover"
+                                />
                             </td>
                             <td>{row.bookName}</td>
                             <td>{row.borrowDate}</td>

@@ -25,9 +25,9 @@ const Router = () => {
                     {
                         authToken.getToken() && (
                             <>
-                                <Route path="requestlist" element={<RequestList />} />
+                                <Route path="requestlist" element={<HistoryRequestList />} />
                                 <Route path="requestedlist" element={<RequestedList />} />
-                                <Route path="historyrequestlist" element={<HistoryRequestList />} />
+                                <Route path="historyrequestlist" element={<RequestList />} />
                             </>
                         )
                     }

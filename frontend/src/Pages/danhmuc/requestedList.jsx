@@ -1,11 +1,8 @@
 import * as React from 'react';
 import { useState } from 'react';
 import imgBook from './notbook.png';
-// Example image URLs (update this with actual image paths)
-const posterImages = [
-    'poster1.png', 'poster2.png', 'poster3.png', 'poster4.png', // etc.
-];
-
+import axios from './axios';
+// Create mock data
 function createData(poster, bookName, borrowDate, returnStatus, returnTime) {
     return { poster, bookName, borrowDate, returnStatus, returnTime };
 }
@@ -16,7 +13,7 @@ const rows = [
     createData(imgBook, 'Chocolate bar', '03/12/2024', 'Quá hạn', '14/12/2024'),
     ...Array.from({ length: 95 }, (_, index) =>
         createData(
-            imgBook, // Loop through the images array
+            imgBook,
             `Book ${index + 4}`,
             `${String((index % 30) + 1).padStart(2, '0')}/12/2024`,
             index % 3 === 0 ? 'Đang mượn' : index % 3 === 1 ? 'Đã trả' : 'Quá hạn',
@@ -28,11 +25,14 @@ const rows = [
 export default function BorrowingList() {
     const [currentPage, setCurrentPage] = useState(1); // Current page
     const itemsPerPage = 10; // Rows per page
-    const totalPages = Math.ceil(rows.length / itemsPerPage); // Total pages
     const maxPageButtons = 4; // Max buttons to display
 
+    // Filter rows to include only those with the status "Đang mượn"
+    const filteredRows = rows.filter(row => row.returnStatus === 'Đang mượn');
+    const totalPages = Math.ceil(filteredRows.length / itemsPerPage); // Total pages after filtering
+
     // Rows to display per page
-    const displayedRows = rows.slice(
+    const displayedRows = filteredRows.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
@@ -43,7 +43,24 @@ export default function BorrowingList() {
             setCurrentPage(page);
         }
     };
-
+  useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.getList(); // Adjust API call as needed
+                if (res.success) {
+                    setRequests(res.data);
+                } else {
+                    setRequests([]);
+                }
+            } catch (error) {
+                console.error('Error fetching requests:', error);
+                setRequests([]);
+            } finally {
+                setLoading(false); // Stop loading
+            }
+        };
+        fetchData();
+    }, []);
     // Generate pagination buttons
     const generatePageNumbers = () => {
         const pageNumbers = [];
@@ -62,7 +79,7 @@ export default function BorrowingList() {
     // Get styles for status
     const getStatusStyles = (status) => {
         const baseStyles =
-            'px-3 py-1 text-sm font-medium border rounded-sm text-center inline-block w-32 h-8'; // Fixed width 6rem
+            'px-3 py-1 text-sm font-medium border rounded-sm text-center inline-block w-32 h-8';
         switch (status) {
             case 'Đã trả':
                 return `${baseStyles} text-green-600 border-green-600 bg-green-100`;
