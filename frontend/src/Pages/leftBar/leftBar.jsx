@@ -39,7 +39,6 @@ const LeftBar = ({ select, dataName }) => {
                             <button className="w-full">Tất cả sách</button>
                         </a>
                     </div>
-
                     {/* Conditionally render the category section based on the URL */}
                     {!isBookDetailPage && (
                         <div className="flex-col">
@@ -81,12 +80,12 @@ const LeftBar = ({ select, dataName }) => {
                                         <button className="w-full">Danh sách yêu cầu mượn</button>
                                     </a>
                                 </div>
-                                <div className="flex row items-center pt-4">
+                                {/* <div className="flex row items-center pt-4">
                                     <div className="w-4 border-b-2 border-white "></div>
                                     <a className={`${thisPage === 'requestedlist' ? 'bg-blue-500' : 'bg-[#F19ED2]'} w-full p-2 rounded-2xl h-11`} href="/requestedlist">
                                         <button className="w-full">Danh sách đang mượn</button>
                                     </a>
-                                </div>
+                                </div> */}
                                 <div className="flex row items-center pt-4">
                                     <div className="w-4 border-b-2 border-white "></div>
                                     <a className={`${thisPage === 'historyrequestlist' ? 'bg-blue-500' : 'bg-[#F19ED2]'} w-full p-2 rounded-2xl h-11`} href="/historyrequestlist">

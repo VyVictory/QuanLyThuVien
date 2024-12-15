@@ -14,6 +14,7 @@ import RequestedList from "../Pages/danhmuc/requestedList";
 import HistoryRequestList from "../Pages/danhmuc/historyRequestList";
 import BookDetail from "../Pages/Center/bookDetail";
 import authToken from "../components/authToken";
+import Search from "../Pages/Center/search";
 const Router = () => {
     return (
         <BrowserRouter>
@@ -22,12 +23,13 @@ const Router = () => {
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Center />} />
                     <Route path="*" element={<NoPage />} />
+                    <Route path="/search/:id" element={<Search />} />
                     {
                         authToken.getToken() && (
                             <>
-                                <Route path="requestlist" element={<HistoryRequestList />} />
+                                <Route path="requestlist" element={<RequestList />} />
                                 <Route path="requestedlist" element={<RequestedList />} />
-                                <Route path="historyrequestlist" element={<RequestList />} />
+                                <Route path="historyrequestlist" element={<HistoryRequestList />} />
                             </>
                         )
                     }

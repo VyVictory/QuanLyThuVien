@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import imgBook from './notbook.png';
 import axios from './axios';
+
 // Create mock data
 function createData(poster, bookName, borrowDate, returnStatus, returnTime) {
     return { poster, bookName, borrowDate, returnStatus, returnTime };
@@ -24,6 +25,7 @@ const rows = [
 
 export default function BorrowingList() {
     const [currentPage, setCurrentPage] = useState(1); // Current page
+    const [requests, setRequests] = useState([]); // State to store API data
     const itemsPerPage = 10; // Rows per page
     const maxPageButtons = 4; // Max buttons to display
 
@@ -43,24 +45,25 @@ export default function BorrowingList() {
             setCurrentPage(page);
         }
     };
-  useEffect(() => {
+
+    // Fetch API data
+    useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.getList(); // Adjust API call as needed
+                const res = await axios.getMyRequestAccect(); // Adjust API call as needed
                 if (res.success) {
-                    setRequests(res.data);
+                    setRequests(res.data); // Store the response data
                 } else {
-                    setRequests([]);
+                    setRequests([]); // Clear if no data found
                 }
             } catch (error) {
                 console.error('Error fetching requests:', error);
-                setRequests([]);
-            } finally {
-                setLoading(false); // Stop loading
+                setRequests([]); // Clear in case of an error
             }
         };
         fetchData();
     }, []);
+
     // Generate pagination buttons
     const generatePageNumbers = () => {
         const pageNumbers = [];
@@ -109,22 +112,22 @@ export default function BorrowingList() {
                     </tr>
                 </thead>
                 <tbody>
-                    {displayedRows.map((row, index) => (
+                    {requests.map((request, index) => (
                         <tr key={index} className="text-center border-b">
                             <td className="py-2">
                                 {(currentPage - 1) * itemsPerPage + index + 1}
                             </td>
                             <td>
-                                <img src={row.poster} alt="Book poster" className="w-12 h-12 object-cover" />
+                                <img src={imgBook} alt="Book poster" className="w-12 h-12 object-cover" />
                             </td>
-                            <td>{row.bookName}</td>
-                            <td>{row.borrowDate}</td>
+                            <td>{request.title || 'Tên sách chưa có'}</td>
+                            <td>{new Date(request.borrowDate).toLocaleDateString()}</td>
                             <td>
-                                <span className={getStatusStyles(row.returnStatus)}>
-                                    {row.returnStatus}
+                                <span className='px-3 py-1 text-sm font-medium border rounded-sm text-center inline-block w-32 h-8 text-white border-gray-700 bg-gray-300'>
+                                    Đang mượn
                                 </span>
                             </td>
-                            <td>{row.returnTime}</td>
+                            <td>{request.expectedReturn ? new Date(request.expectedReturn).toLocaleDateString() : 'Chưa xác định'}</td>
                         </tr>
                     ))}
                 </tbody>

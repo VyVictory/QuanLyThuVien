@@ -3,65 +3,28 @@ import { useState, useEffect } from 'react';
 import imgBook from './notbook.png';
 import axios from './axios';
 
-// Helper function to format API data into rows
 function createData(poster, bookName, borrowDate, returnStatus, returnTime) {
     return { poster, bookName, borrowDate, returnStatus, returnTime };
 }
 
 export default function BorrowingList() {
     const [currentPage, setCurrentPage] = useState(1);
-    const [rows, setRows] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    const itemsPerPage = 10; // Rows per page
+    const [rows, setRows] = useState([]); // Updated rows to be dynamic
+    const itemsPerPage = 10;
     const totalPages = Math.ceil(rows.length / itemsPerPage);
     const maxPageButtons = 4;
 
-    // Fetch data from API
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await axios.getMyRequests(); // API call
-                if (res.success) {
-                    const fetchedRows = res.data.map((request, index) => {
-                        const statusMap = {
-                            pending: 'Đang mượn',
-                            approved: 'Đã trả',
-                            rejected: 'Quá hạn',
-                        };
+    const displayedRows = rows.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
 
-                        return createData(
-                            imgBook, // Default image
-                            `Sách ${index + 1}`, // Fallback title
-                            new Date(request.requestedDate).toLocaleDateString('vi-VN'), // Format borrow date
-                            statusMap[request.status] || 'Không rõ', // Map status
-                            request.responseDate
-                                ? new Date(request.responseDate).toLocaleDateString('vi-VN')
-                                : 'Chưa có' // Format response date
-                        );
-                    });
-                    setRows(fetchedRows);
-                } else {
-                    setRows([]);
-                }
-            } catch (error) {
-                console.error('Error fetching requests:', error);
-                setRows([]);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
-
-    // Handle page change
     const handlePageChange = (page) => {
         if (page > 0 && page <= totalPages) {
             setCurrentPage(page);
         }
     };
 
-    // Generate pagination buttons
     const generatePageNumbers = () => {
         const pageNumbers = [];
         const startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2));
@@ -76,10 +39,9 @@ export default function BorrowingList() {
         return pageNumbers;
     };
 
-    // Style classes for status badges
     const getStatusStyles = (status) => {
         const baseStyles =
-            'px-3 py-1 text-sm font-medium border rounded-sm text-center inline-block w-32 h-8';
+            'px-3 py-1 text-sm font-medium border rounded-sm text-center inline-block w-40 h-8';
         switch (status) {
             case 'Đã trả':
                 return `${baseStyles} text-green-600 border-green-600 bg-green-100`;
@@ -87,25 +49,57 @@ export default function BorrowingList() {
                 return `${baseStyles} text-red-600 border-red-600 bg-red-100`;
             case 'Đang mượn':
                 return `${baseStyles} text-white border-gray-700 bg-gray-300`;
+            case 'Đang gửi yêu cầu': // New status
+                return `${baseStyles} text-blue-600 border-blue-600 bg-blue-100`;
+            case 'Bị từ chối': // New status
+                return `${baseStyles} text-gray-600 border-gray-600 bg-gray-100`;
             default:
                 return baseStyles;
         }
     };
 
-    // Display rows for the current page
-    const displayedRows = rows.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-    );
-
-    if (loading) {
-        return <div className="text-center py-10">Đang tải...</div>;
-    }
-
+    // Fetch data from API
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.getMyRequests(); // Adjust API call as needed
+                if (res.success) {
+                    const fetchedRows = res.data.map((request, index) => {
+                        const statusMap = {
+                            pending: 'Đang gửi yêu cầu',
+                            approved: 'Đang mượn',
+                            rejected: 'Bị từ chối',
+                        };
+                        return createData(
+                            imgBook, // Default image
+                            request.book.title, // Book title
+                            new Date(request.requestedDate).toLocaleDateString('vi-VN'), // Format borrow date
+                            statusMap[request.status] || 'Đã trả', // Map status, default to 'Đã trả'
+                            request.responseDate
+                                ? new Date(request.responseDate).toLocaleDateString('vi-VN')
+                                : 'Chưa có' // Format response date
+                        );
+                    });
+        
+                    // Filter out the rows where returnStatus is 'Đã trả'
+                    const filteredRows = fetchedRows.filter(row => row.returnStatus !== 'Đã trả');
+                    
+                    setRows(filteredRows); // Set the filtered data into rows
+                } else {
+                    setRows([]); // Handle failure case
+                }
+            } catch (error) {
+                console.error('Error fetching requests:', error);
+                setRows([]); // Handle error case
+            }
+        };
+        fetchData();
+    }, []);
+    
     return (
         <div className="pt-12 px-5 min-h-screen">
             <div className="p-5 text-lg">
-                <strong>Lịch sử mượn sách</strong>
+                <strong>Danh sách yêu cầu  mượn</strong>
             </div>
             <table className="w-full min-h-full">
                 <thead>
@@ -125,11 +119,7 @@ export default function BorrowingList() {
                                 {(currentPage - 1) * itemsPerPage + index + 1}
                             </td>
                             <td>
-                                <img
-                                    src={row.poster}
-                                    alt="Book poster"
-                                    className="w-12 h-12 object-cover"
-                                />
+                                <img src={row.poster} alt="Book poster" className="w-12 h-12 object-cover" />
                             </td>
                             <td>{row.bookName}</td>
                             <td>{row.borrowDate}</td>

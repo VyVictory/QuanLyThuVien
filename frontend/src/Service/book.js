@@ -9,6 +9,14 @@ const getAllBook = async () => {
         return { success: false, error: error };
     }
 };
+const getBookSearch = async () => {
+    try {
+        const response = await axios.get("http://localhost:3001/book/");
+        return { success: true, data: response.data };
+    } catch (error) {
+        return { success: false, error: error };
+    }
+};
 const getAllBookByCategory = async (idCategory) => {
     try {
         const response = await axios.get("http://localhost:3001/book/getbookbyCategory/" + idCategory);
@@ -43,6 +51,7 @@ const requestBorrow = async (idBook) => {
 
 export default {
     getAllBook,
+    getBookSearch,
     getAllBookByCategory,
     getBookById,
     requestBorrow,

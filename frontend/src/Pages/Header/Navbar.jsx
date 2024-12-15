@@ -12,7 +12,7 @@ const Navbar = () => {
         navigate('/login');
     }
     const [username, setUsername] = useState(null); // Trạng thái lưu tên người dùng
-
+    const [searchTerm, setSearchTerm] = useState(""); // State for the search input
     const getUserNameData = async () => {
         try {
             const prf = await auth.current(); // Gọi API để lấy thông tin người dùng
@@ -28,6 +28,20 @@ const Navbar = () => {
             getUserNameData();
         }
     }, [authToken]);
+
+    useEffect(() => {
+        if (authToken.getToken()) {
+            getUserNameData();
+        }
+    }, [authToken]);
+
+    const handleSearch = (e) => {
+        e.preventDefault(); // Prevent the default form submission
+        if (searchTerm.trim() !== "") {
+            navigate(`/search?id=${searchTerm}`); // Navigate to the search page with the query
+        }
+    };
+
     return (
         <div className="fixed">
 
@@ -35,21 +49,22 @@ const Navbar = () => {
                 <a href="/" className="uppercase font-bold flex-none text-white text-xl">
                     thư viện online
                 </a>
-                <div class="w-full max-w-sm min-w-[200px] grow mx-36" >
-                    <div class="relative">
-                        <input
-                            class="w-full p-1 pl-3 rounded-2xl border border-slate-200 focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
-                            placeholder="Tìm kiếm"
-                        />
-                        <button
-                            class="absolute top-0 right-0 flex items-center h-full px-2" >
-                            <div>
-                                <svg className="" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <div className="w-full max-w-sm min-w-[200px] grow mx-36">
+                    <div className="relative">
+                        <form onSubmit={handleSearch}>
+                            <input
+                                type="text"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm on input change
+                                className="w-full p-1 pl-3 rounded-2xl border border-slate-200 focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
+                                placeholder="Tìm kiếm"
+                            />
+                            <button type="submit" className="absolute top-0 right-0 flex items-center h-full px-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                                 </svg>
-                            </div>
-
-                        </button>
+                            </button>
+                        </form>
                     </div>
                 </div>
                 {!authToken.getToken() ? (

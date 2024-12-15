@@ -343,27 +343,17 @@ export class BookService {
   }
 
   async getBooksByCategory(categoryId: string): Promise<Book[]> {
-  
     if (!isValidObjectId(categoryId)) {
       throw new HttpException('Invalid category ID', HttpStatus.BAD_REQUEST);
     }
   
-    // Truy vấn sách và sử dụng populate lồng ghép
     const books = await this.BookModel.find({ category: categoryId })
       .populate([
-        { path: 'category', select: '_id nameCate' }, // Lấy thông tin từ collection Category
-        { path: 'createby', select: '_id firstName lastName' }, // Lấy thông tin từ collection User
-        {
-          path: 'borrowHistory',
-          populate: {
-            path: 'userId',
-            select: 'firstName lastName', // Lấy thông tin người mượn
-          },
-        },
+        { path: 'category', select: '_id nameCate' },
+        { path: 'createby', select: 'firstName lastName' },
       ])
       .exec();
   
-    // Kiểm tra nếu không có sách
     if (!books || books.length === 0) {
       throw new HttpException('No books found for this category', HttpStatus.NOT_FOUND);
     }
@@ -534,7 +524,9 @@ export class BookService {
 
   async getMyRequests(userId: string): Promise<RequestBrrowBook[]> {
     const userObjectId = new Types.ObjectId(userId);
-    return await this.RequestBrrowBookModel.find({ user: userId });
+    return await this.RequestBrrowBookModel.find({ user: userId })
+    .populate('book', 'title')
+    .exec()
   }
     
 }

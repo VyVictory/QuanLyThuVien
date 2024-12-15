@@ -19,7 +19,7 @@ export class RequestBrrowBook extends Document {
     requestedDate: Date;
 
     @Prop({ required: true })
-    status: 'pending' | 'approved' | 'rejected' | 'borrowed' |'unsuccessful' ;
+    status: 'pending' | 'approved' | 'rejected' | 'borrowed' |'unsuccessful'  |'return' ;
 
     @Prop({ default: "" })
     responseDate: Date;

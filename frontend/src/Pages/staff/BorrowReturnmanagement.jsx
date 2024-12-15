@@ -1,12 +1,21 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { comfirmRequest, getAllBook, getAllRequest, getAllUser, rejectRequest } from '../../Service/Staff'
+import { comfirmRequest, getAllBook, getAllRequest, getAllUser, rejectRequest,returnRequest } from '../../Service/Staff'
+ 
 export default function BorrowReturnmanagement() {
   const [dataRequest, setDataRequest] = useState([])
   const [dataBook, setDataBook] = useState([])
   const [dataUser, setDataUser] = useState([])
 
-
+  const returnBook = async (id) => {
+    console.log(id)
+    const sp = await returnRequest(id)
+    if(sp){
+      alert('xác nhận người dùng trả sách thành công');
+      window.location.reload(); // This will reload the page
+    }
+    
+  }
   useEffect(() => {
     const fetchdata = async () => {
       const responseRequest = await getAllRequest()
@@ -116,11 +125,13 @@ export default function BorrowReturnmanagement() {
                               );
                             case "borrowed":
                               return (
-                                <button className="bg-green-400 px-3 py-1 rounded-md mr-2 hover:bg-secondary/80">update</button>
+                                <></>
                               );
                             case "approved":
                               return (
-                                <button className="bg-green-400 px-3 py-1 rounded-md mr-2 hover:bg-secondary/80">update</button>
+                                <button
+                                onClick={() => returnBook(data._id)}
+                                className="bg-green-400 px-3 py-1 rounded-md mr-2 hover:bg-secondary/80">Return</button>
                               );
                             case "rejected":
                               return (

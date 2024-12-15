@@ -88,3 +88,11 @@ export async function rejectRequest(requestId) {
     )
     return request
 }
+
+export async function returnRequest(id){
+    const token = authToken.getToken();
+    var request = await axios.put(`http://localhost:3001/book/borrowRequestBorrow/${id}`, {},
+        { headers: { Authorization: `Bearer ${token}` }, }
+    )
+    return request
+}
