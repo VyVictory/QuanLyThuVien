@@ -220,7 +220,6 @@ export class AuthService {
       async getAllUser(): Promise<User[]> {
         return this.UserModel.find().exec();
       }
-    
+
 }
-    
 

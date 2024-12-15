@@ -25,10 +25,10 @@ export class AuthController {
     }
 
     @Get('current')
-    @UseGuards(AuthGuardD) // Sử dụng guard để bảo vệ route
+    @UseGuards(AuthGuardD) 
     async getCurrentUser(@CurrentUser() user: any) {
       console.log(user);
-      return user; // Trả về thông tin user hiện tại
+      return user; 
     }
 
     @Post('refresh-token')
@@ -48,11 +48,10 @@ export class AuthController {
         if (!currentUser) {
             throw new HttpException('User not found or not authenticated', HttpStatus.UNAUTHORIZED);
         }
-        
-        //Log _id của currentUser
+
+
         //console.log('Current User ID:', currentUser._id ? currentUser._id.toString() : 'ID is undefined');
     
-        // Nếu bạn muốn chỉ cho phép cập nhật một số trường, có thể thêm logic kiểm tra ở đây
         return this.authService.updateUser(currentUser._id.toString(), updateData);
     }
 
@@ -72,5 +71,5 @@ export class AuthController {
         return this.authService.getAllUser();
     }
 
-
+    
 }

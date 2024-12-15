@@ -1,5 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Types, Document } from 'mongoose';
+import { User } from 'src/auth/Schemas/user.schema';
+import { Category } from 'src/category/schema/category.schema';
 
 @Schema({
   timestamps: true,
@@ -15,7 +17,7 @@ export class Book extends Document {
 
   @Prop({  
     type: Types.ObjectId, ref: 'Category' })
-  category: Types.ObjectId; 
+  category: Category; 
 
   @Prop()
   author: string;
@@ -39,10 +41,10 @@ export class Book extends Document {
   available: boolean; 
 
   @Prop({ type: Types.ObjectId, ref: 'User' })
-  createby: Types.ObjectId;
+  createby: User;
 
   @Prop({ type: Types.ObjectId, ref: 'User' })
-  UpdateBy: Types.ObjectId;
+  UpdateBy: User;
 
   @Prop({ type: [String], default: [] }) 
   img: string[];
@@ -53,30 +55,33 @@ export class Book extends Document {
   @Prop({ default: 0 })
   borrowedCopies: number;
 
-  @Prop({
-    type: [
-      {
-        userId: { type: Types.ObjectId, ref: 'User' }, 
-        borrowDate: { type: Date, required: true },
-        ExpectedReturn: { type: Date, required: true },
-        returnDate: { type: Date, default: null },
-        status: { type: String,
-           default: 'are borrowing',
-           enum: ['are borrowing', 'returned', 'overdue'],
-          },
-      },
-    ],
-    default: [],
-  })
-  borrowHistory: {
-    userId: Types.ObjectId;
-    borrowDate: Date;
-    ExpectedReturn: Date;
-    status: string;
-    returnDate: Date | null;
-  }[];
-  
+
 }
-
-
 export const BookSchema = SchemaFactory.createForClass(Book);
+
+
+  // @Prop({
+  //   type: [
+  //     {
+  //       userId: { type: Types.ObjectId, ref: 'User' }, 
+  //       borrowDate: { type: Date, required: true },
+  //       ExpectedReturn: { type: Date, required: true },
+  //       returnDate: { type: Date, default: null },
+  //       status: { type: String,
+  //          default: 'are borrowing',
+  //          enum: ['are borrowing', 'returned', 'overdue'],
+  //         },
+  //     },
+  //   ],
+  //   default: [],
+  // })
+  // borrowHistory: {
+  //   userId: Types.ObjectId;
+  //   borrowDate: Date;
+  //   ExpectedReturn: Date;
+  //   status: string;
+  //   returnDate: Date | null;
+  // }[];
+  
+
+

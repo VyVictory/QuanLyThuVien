@@ -9,6 +9,7 @@ import { Category } from '../category/schema/category.schema';
 import { CategoryModule } from 'src/category/category.module';
 import { RequestBrrowBookSchema } from './schemas/requestBrrowBook.schema';
 import { ScheduleModule } from '@nestjs/schedule';
+import { BorrowHistorySchema } from './schemas/BorrowHistory.schema';
 
 
 @Module({
@@ -18,6 +19,7 @@ import { ScheduleModule } from '@nestjs/schedule';
   CategoryModule,
   MongooseModule.forFeature([{ name: 'Book', schema: BookSchema }]),
   MongooseModule.forFeature([{ name: 'RequestBrrowBook', schema: RequestBrrowBookSchema }]),
+  MongooseModule.forFeature([{ name: 'BorrowHistory', schema: BorrowHistorySchema}]),
   ScheduleModule.forRoot()
 ],
   controllers: [BookController],
