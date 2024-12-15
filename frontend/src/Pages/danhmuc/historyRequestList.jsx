@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import imgBook from './notbook.png'; // Import the default image
+import authToken from '../../components/authToken';
+import axios from './axios';
 
 function createData(poster, bookName, requestDate, receiveDate, returnTime) {
     return { poster, bookName, requestDate, receiveDate, returnTime };
@@ -24,7 +26,6 @@ const rows = [
         )
     ),
 ];
-
 export default function HistoryRequestList() {
     const [currentPage, setCurrentPage] = useState(1); // Current page
     const itemsPerPage = 10; // Rows per page
@@ -58,6 +59,27 @@ export default function HistoryRequestList() {
 
         return pageNumbers;
     };
+    const [requests, setRequests] = useState([]);
+    const [loading, setLoading] = useState(true); // Loading state
+
+    useEffect(() => {
+        const fetchdata = async () => {
+            try {
+                const res = await axios.getList();
+                if (res.success) {
+                    setRequests(res.data);
+                } else {
+                    setRequests([]);
+                }
+            } catch (error) {
+                console.error('Error fetching requests:', error);
+                setRequests([]);
+            } finally {
+                setLoading(false); // Stop loading
+            }
+        };
+        fetchdata();
+    }, []);
 
     return (
         <div className="pt-12 px-5 min-h-screen">
@@ -83,6 +105,10 @@ export default function HistoryRequestList() {
                                 <img src={row.poster} alt="Book poster" className="w-12 h-12 object-cover" />
                             </td>
                             <td>{row.bookName}</td>
+                            {/* 
+                            {row.}
+                            
+                            */}
                             <td>{row.requestDate}</td>
                             <td>{row.receiveDate}</td>
                             <td>{row.returnTime}</td>
